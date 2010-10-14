@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_filter_title">Add Filter</string>
+    <string name="add_filter_help">Tap to add filter</string>
+    <string name="active_filters_heading">Filters &amp; Sorting</string>
+	<string name="recipes_heading">Recipes</string>
+    <string name="menu_prefs_short">Prefs</string>
+    <string name="menu_prefs">Preferences</string>
+    <string name="menu_credits_short">Credits</string>
+    <string name="menu_credits">View Credits</string>
+    <string name="recipes_url_password_summary">The password to access the recipes database (if required).</string>
+    <string name="recipes_url_password">Password</string>
+    <string name="recipes_url_username_summary">The username to access the recipes database (if required).</string>
+    <string name="recipes_url_username">Username</string>
+    <string name="recipes_url_summary">The URL that the recipe database can be found at.</string>
+    <string name="recipes_url">Recipes URL</string>
+    <string name="show_recipes">&lt;&lt; Recipes</string>
+    <string name="show_filters">Filters &gt;&gt;</string>
+    <string name="hello">Hello World, RecipeBrowser!</string>
+    <string name="app_name">Kitchen Recipes</string>
+</resources>

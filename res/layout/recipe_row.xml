@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+ 	android:padding="6dip"
+ 	android:layout_width="fill_parent"
+  	android:layout_height="?android:attr/listPreferredItemHeight">
+  		
+  	<ImageView android:id="@+id/RecipeIcon"
+  		android:layout_width="70dip"
+  		android:layout_height="70dip"
+  		android:scaleType="fitCenter"
+  		android:paddingLeft="5dip"
+  		android:layout_alignParentRight="true"></ImageView>
+
+  	<TextView android:id="@+id/RecipeTitle"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+  		android:singleLine="true"
+  		android:textSize="18dip"
+  		android:scrollHorizontally="true"
+  		android:layout_toLeftOf="@id/RecipeIcon"
+  		android:maxLines="1"
+  		android:marqueeRepeatLimit="marquee_forever"
+  		android:ellipsize="marquee"></TextView>
+  		  		
+  	<!-- <TextView android:id="@+id/RecipeCuisine"
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:singleLine="true"
+  		android:layout_below="@id/RecipeTitle"
+  		android:ellipsize="marquee"></TextView>-->
+  		
+  	<TextView android:id="@+id/RecipePrepTime"
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:layout_below="@id/RecipeTitle"
+  		android:layout_toLeftOf="@id/RecipeIcon"
+  		android:textSize="12dip"
+  		android:singleLine="true"
+  		android:scrollHorizontally="true"
+		android:ellipsize="marquee"></TextView>
+
+  	<TextView android:id="@+id/RecipeCookTime"
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:layout_below="@id/RecipePrepTime"
+  		android:layout_toLeftOf="@id/RecipeIcon"
+  		android:textSize="12dip"
+  		android:singleLine="true"
+  		android:scrollHorizontally="true"
+		android:ellipsize="marquee"></TextView>
+
+  	<TextView android:id="@+id/RecipeYield"
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:layout_below="@id/RecipeCookTime"
+  		android:layout_toLeftOf="@id/RecipeIcon"
+  		android:textSize="12dip"
+  		android:singleLine="true"
+  		android:scrollHorizontally="true"
+		android:ellipsize="marquee"></TextView>
+  	
+</RelativeLayout>

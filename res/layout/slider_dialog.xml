@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<TextView
+		android:id="@+id/DialogSeekMinimum"
+		android:text="Min"
+		android:layout_alignParentLeft="true"
+		android:paddingLeft="15dip"
+		android:paddingRight="5dip"
+		android:paddingTop="20dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"></TextView>
+	<TextView
+		android:id="@+id/DialogSeekMaximum"
+		android:text="Max"
+		android:layout_alignParentRight="true"
+		android:paddingLeft="5dip"
+		android:paddingRight="15dip"
+		android:paddingTop="20dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"></TextView>
+
+	<SeekBar 
+		android:id="@+id/DialogSeekBar" 
+		android:layout_alignParentTop="true"
+		android:layout_toLeftOf="@id/DialogSeekMaximum"
+		android:layout_toRightOf="@id/DialogSeekMinimum"
+		android:padding="15dip"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"></SeekBar>
+		
+		
+	<TextView
+		android:id="@+id/DialogSeekCurrent"
+		android:text="Curr"
+		android:layout_below="@id/DialogSeekBar"
+		android:paddingBottom="30dip"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"></TextView>
+		
+	<Button
+		android:id="@+id/DialogOkButton"
+		android:text="OK"
+		android:layout_below="@id/DialogSeekCurrent"
+		android:padding="15dip"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"></Button>
+		
+</RelativeLayout>

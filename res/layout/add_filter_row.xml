@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+ 	android:padding="6dip"
+ 	android:layout_width="fill_parent"
+  	android:layout_height="?android:attr/listPreferredItemHeight">
+  		
+  	<ImageView android:id="@+id/RemoveFilterIcon"
+  		android:layout_width="50dip"
+  		android:layout_height="50dip"
+  		android:scaleType="fitCenter"
+  		android:paddingLeft="5dip"
+  		android:src="@drawable/add"
+  		android:layout_alignParentLeft="true"></ImageView>
+
+  	<TextView android:id="@+id/AddFilterDesc"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+  		android:singleLine="true"
+  		android:textSize="18dip"
+  		android:scrollHorizontally="true"
+  		android:layout_toRightOf="@id/RemoveFilterIcon"
+  		android:maxLines="1"
+  		android:text="@string/add_filter_title"
+  		android:marqueeRepeatLimit="marquee_forever"
+  		android:ellipsize="marquee"></TextView>
+
+  		
+  	<TextView android:id="@+id/AddFilterHelp"
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:layout_below="@id/ActiveFilterDesc"
+  		android:layout_toLeftOf="@id/RemoveFilterIcon"
+  		android:textSize="12dip"
+  		android:text="@string/add_filter_help"
+  		android:scrollHorizontally="true"
+		android:ellipsize="marquee"></TextView>
+  	
+</RelativeLayout>

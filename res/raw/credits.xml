@@ -1,0 +1,82 @@
+<html>
+	<head>
+		<title>Recipe Credits</title>
+		<style>
+			!!!STYLESHEET!!!
+		</style>
+	</head>
+	
+	<body>
+	
+		<div id="credits">
+			<h1>Credits</h1>
+			
+			<div class="credit">
+				<span class="title">Peppers</span>
+				<span class="author">Miriam Moshinsky</span>
+				<span class="author_url"><a href="http://www.klukeart.com/">www.klukeart.com</a></span>
+				<span class="source"><a href="http://www.iconspedia.com/pack/peppers-1660/">Iconspedia</a></span>
+				<span class="licence">Free for non-commercial use.</span>
+				<span class="notes">Pepper icons used when a recipe has no image.</span>
+			</div>
+
+			<div class="credit">
+				<span class="title">Developer Kit</span>
+				<span class="author">Burak OZTURK</span>
+				<span class="author_url"><a href="http://www.hadibe.com/">www.hadibe.com</a></span>
+				<span class="source"><a href="http://www.iconspedia.com/pack/developer-kit-2182/">Iconspedia</a></span>
+				<span class="licence">Free.</span>
+				<span class="notes">Icons used for filters, etc.</span>
+			</div>
+
+			<div class="credit">
+				<span class="title">Vintage Kitchen</span>
+				<span class="author">Greg Barnes</span>
+				<span class="source"><a href="http://http://www.iconspedia.com/pack/vintage-kitchen-22-5/">Iconspedia</a></span>
+				<span class="licence">Free for non-commercial use.</span>
+				<span class="notes">Application Icon.</span>
+			</div>
+
+			<div class="credit">
+				<span class="title">WebView Tutorial</span>
+				<span class="author">Nazmul</span>
+				<span class="author_url"><a href="http://developerlife.com/tutorials/?author=2">http://developerlife.com/tutorials/?author=2</a></span>
+				<span class="source"><a href="http://developerlife.com/tutorials/?p=369">DeveloperLife</a></span>
+				<span class="licence">Copyright 2010 - ScreamingToaster LLC.</span>
+				<span class="notes">Raw Resource loading code, WebView handling.</span>
+			</div>
+		</div>
+	
+	
+		<div id="version history">
+			<h1>Version History</h1>
+	
+			<div class="version">
+				<span class="major">0</span>
+				<span class="minor">1</span>
+				<span class="type">alpha</span>
+				<span class="comment">Initial development</span>
+				<span class="changes"><ul>
+					<li>Created</li>
+				</ul></span>
+			</div>
+		</div>
+	</body>
+</html>
+
+<!-- Credits
+
+Icons used in this app:
+  - Peppers, by Miriam Moshinsky (http://www.klukeart.com/) 
+    http://www.iconspedia.com/pack/peppers-1660/
+    Free for non-commercial use.
+
+  - Developer Kit, by Burak OZTURK (http://www.hadibe.com/)
+  	http://www.iconspedia.com/pack/developer-kit-2182/
+  	Free
+  	
+  - Vintage Kitchen, by Greg Barnes
+    http://http://www.iconspedia.com/pack/vintage-kitchen-22-5/
+    Free for non-commerical use.
+
+ -->

@@ -1,0 +1,83 @@
+body {
+	background-color: white;
+	font-size: 0.8em;
+}
+
+h1 {
+	font-family: serif;
+	font-size: 0.8em;
+	font-weight: bold;
+}
+
+#credits {
+	padding-bottom: 1em;
+	border-bottom: 1px dashed #aaaaaa;
+}
+
+#credits .credit {
+	padding: 0.5em;
+	background-color: #dddddd;
+	border: 1px dotted #aaaaaa;
+	margin: 0.5em;
+	font-size: 0.8em;
+}
+
+/* Title */
+#credits .credit .title {
+	display: block;
+	font-size: 1.2em;
+	text-align: center;
+	text-decoration: underline;
+	font-family: serif;
+	padding-bottom: 0.25em;
+}
+
+/* Author */
+#credits .credit .author:before { 
+	content: "Author: ";
+	font-weight: bold;
+	font-size: 1.2em;
+}
+#credits .credit .author {
+	display: inline-block;
+	margin-right: 0.5em;
+}
+
+/* Author URL */
+#credits .credit .author_url:before {
+	content: "(";
+}
+#credits .credit .author_url:after {
+	content: ")";
+}
+#credits .credit .author_url {
+	display: inline-block;
+}
+
+/* Source */
+#credits .credit .source:before {
+	content: "Source: ";
+	font-weight: bold;
+	font-size: 1.2em;
+}
+#credits .credit .source {
+	display: block;
+}
+
+/* Licence */
+#credits .credit .licence:before {
+	content: "Licence: ";
+	font-weight: bold;
+	font-size: 1.2em;
+}
+#credits .credit .licence {
+	display: block;
+}
+
+/* Notes */
+#credits .credit .notes {
+	font-size: 0.8em;
+	font-style: italic;
+	margin: 0.5em;
+	display: block;
+}

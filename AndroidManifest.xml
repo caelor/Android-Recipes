@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="uk.me.plek.kitchenRecipes"
+    android:versionCode="1"
+    android:versionName="1.0">
+    <application android:icon="@drawable/appicon" android:label="@string/app_name"
+    	android:debuggable="true" android:name="RecipeBrowserApplication">
+        <activity android:name=".RecipeBrowser"
+
+        	android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+	    <activity android:name="RecipePreferences" android:label="@string/menu_prefs">
+    	</activity>
+    	
+    	<activity android:name="ViewCredits" 
+    		android:theme="@android:style/Theme.Light.NoTitleBar"
+    		android:label="ViewCredits">
+    	</activity>
+    	
+	</application>
+
+	<uses-sdk android:minSdkVersion="3" />
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+</manifest> 

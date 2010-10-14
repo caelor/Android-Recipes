@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android"
+	>
+	<item android:drawable="@drawable/pepper1"
+		android:maxLevel="6" />
+	<item android:drawable="@drawable/pepper2"
+		android:maxLevel="12" />
+	<item android:drawable="@drawable/pepper3"
+		android:maxLevel="18" />
+	<item android:drawable="@drawable/pepper4"
+		android:maxLevel="24" />
+	<item android:drawable="@drawable/pepper5"
+		android:maxLevel="32" />
+	<item android:drawable="@drawable/pepper6"
+		android:maxLevel="39" />
+	<item android:drawable="@drawable/pepper7"
+		android:maxLevel="46" />
+	<item android:drawable="@drawable/pepper8"
+		android:maxLevel="52" />
+	<item android:drawable="@drawable/pepper9"
+		android:maxLevel="59" />
+	<item android:drawable="@drawable/pepper10"
+		android:maxLevel="66" />
+	<item android:drawable="@drawable/pepper11"
+		android:maxLevel="72" />
+	<item android:drawable="@drawable/pepper12"
+		android:maxLevel="79" />
+	<item android:drawable="@drawable/pepper13"
+		android:maxLevel="86" />
+	<item android:drawable="@drawable/pepper14"
+		android:maxLevel="90" />
+	<item android:drawable="@drawable/pepper15"
+		android:maxLevel="95" />
+	<item android:drawable="@drawable/pepper16"
+		android:maxLevel="100" />
+</level-list>
