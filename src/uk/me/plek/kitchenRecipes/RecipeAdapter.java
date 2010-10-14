@@ -39,6 +39,9 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 			LayoutInflater vi = (LayoutInflater)_context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.recipe_row, null);
 		}
+		else {
+			
+		}
 		
 		BasicRecipe r = items.get(position);
 		if (r != null) {
@@ -148,9 +151,9 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 
 	@Override
 	public void downloadComplete(QueueEntry queueEntry, Bitmap imageBitmap) {
-		//View v = queueEntry.getIdentifier();
-		//ImageView preview = (ImageView) v.findViewById(R.id.RecipeIcon);
-		//preview.setImageBitmap(imageBitmap);
+		View v = queueEntry.getIdentifier();
+		ImageView preview = (ImageView) v.findViewById(R.id.RecipeIcon);
+		preview.setImageBitmap(imageBitmap);
 	}
 
 	@Override

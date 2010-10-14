@@ -157,7 +157,20 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 			c.setUseCaches(false);
 			c.connect();
 
-			parseResponse(c.getInputStream());
+			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				parseResponse(c.getInputStream());
+			}
+			else {
+				new AlertDialog.Builder(this)
+					.setMessage("Unable to contact the server. Please try again later.")
+					.setPositiveButton("OK", new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							RecipeBrowser.this.finish();
+						}
+					})
+					.show();
+			}
 
 		} catch (MalformedURLException e) {
 			retVal = false;
