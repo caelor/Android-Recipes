@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -378,6 +379,12 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 			BasicRecipe recipe = (BasicRecipe)o;
 			Log.i(Global.TAG, "Basic Recipe clicked.");
 			// this basically means we should fire off an intent to show that particular recipe.
+			// broadcast an intent with a scheme of "recipe://"...
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			String url = this.baseUrl + this.relativeUri + "recipe/" + recipe.identifier;
+			url = url.replace("http://", "recipe://");
+			i.setData(Uri.parse(url));
+			startActivity(i);
 		}
 		else if (o instanceof ActiveFilter) {
 			ActiveFilter filter = (ActiveFilter)o;
