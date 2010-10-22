@@ -32,7 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class RecipeBrowser extends Activity implements OnItemClickListener, /*OnItemLongClickListener,*/ OnClickListener, FilterChooserCallback {
@@ -58,8 +57,18 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 	private Runnable doShowErrorToast = new Runnable() {
 		@Override
 		public void run() {
-			Toast errorToast = Toast.makeText(RecipeBrowser.this, "Unable to get data from the server. Please try again later.", Toast.LENGTH_LONG);
-			errorToast.show();
+			//Toast errorToast = Toast.makeText(RecipeBrowser.this, "Unable to get data from the server. Please try again later.", Toast.LENGTH_LONG);
+			//errorToast.show();
+			
+			new AlertDialog.Builder(RecipeBrowser.this)
+			.setMessage("Unable to contact the server. Please try again later.")
+			.setPositiveButton("OK", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					RecipeBrowser.this.finish();
+				}
+			})
+			.show();
 		}
 	};
 	
@@ -170,15 +179,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 				parseResponse(c.getInputStream());
 			}
 			else {
-				new AlertDialog.Builder(this)
-					.setMessage("Unable to contact the server. Please try again later.")
-					.setPositiveButton("OK", new OnClickListener() {
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							RecipeBrowser.this.finish();
-						}
-					})
-					.show();
+				runOnUiThread(doShowErrorToast);
 			}
 
 		} catch (MalformedURLException e) {
