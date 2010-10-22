@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ViewFlipper
   	xmlns:android="http://schemas.android.com/apk/res/android"
-  	android:layout_height="fill_parent" 
-  	android:orientation="vertical" 
-  	android:layout_width="fill_parent">
-	<ListView android:id="@+id/ActiveRecipeList"
-		android:layout_width="fill_parent"
+	android:id="@+id/RecipeViewFlipper"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	>
+	<LinearLayout
+  		android:layout_height="fill_parent" 
+  		android:orientation="vertical" 
+  		android:layout_width="fill_parent">
+		<ListView android:id="@+id/ActiveRecipeList"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			/>
+	</LinearLayout>
+	
+	<LinearLayout
 		android:layout_height="fill_parent"
-		/>
-
-</LinearLayout>
+		android:layout_width="fill_parent">
+		<WebView
+			android:id="@+id/recipeWebView"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			>
+		</WebView> 
+	</LinearLayout>
+</ViewFlipper>

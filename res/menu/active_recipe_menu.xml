@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+ 	xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menuShowActiveRecipes" 
+		android:enabled="true" 
+		android:visible="true" 
+		android:titleCondensed="@string/menu_showactive_short" 
+		android:title="@string/menu_showactive">
+	</item>
+	<item android:id="@+id/menuCredits" 
+		android:enabled="true" 
+		android:visible="true" 
+		android:titleCondensed="@string/menu_credits_short" 
+		android:title="@string/menu_credits">
+	</item>
+</menu>

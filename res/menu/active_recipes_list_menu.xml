@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+ 	xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menuPrefs" 
+		android:enabled="true" 
+		android:visible="true" 
+		android:titleCondensed="@string/menu_prefs_short" 
+		android:title="@string/menu_prefs">
+	</item>
+	<item android:id="@+id/menuCredits" 
+		android:enabled="true" 
+		android:visible="true" 
+		android:titleCondensed="@string/menu_credits_short" 
+		android:title="@string/menu_credits">
+	</item>
+</menu>
