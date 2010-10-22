@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.acra.ErrorReporter;
 
@@ -73,8 +73,8 @@ public class ImageDownloadManager {
 		public void cancel() { cancelled = true; }
 	}
 
-	protected LinkedList<QueueEntry> downloadQueue = new LinkedList<QueueEntry>();
-	protected LinkedList<QueueEntry> notifyQueue = new LinkedList<QueueEntry>();
+	protected ConcurrentLinkedQueue<QueueEntry> downloadQueue = new ConcurrentLinkedQueue<QueueEntry>();
+	protected ConcurrentLinkedQueue<QueueEntry> notifyQueue = new ConcurrentLinkedQueue<QueueEntry>();
 	protected HashMap<Object,QueueEntry> identifierLookup = new HashMap<Object,QueueEntry>();
 	protected final String authUser;
 	protected final String authPass;
