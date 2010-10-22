@@ -17,7 +17,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,10 +32,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 
-public class RecipeBrowser extends Activity implements OnItemClickListener, OnItemLongClickListener, OnClickListener, FilterChooserCallback {
+public class RecipeBrowser extends Activity implements OnItemClickListener, /*OnItemLongClickListener,*/ OnClickListener, FilterChooserCallback {
 	private ArrayList<BasicRecipe> recipes = new ArrayList<BasicRecipe>();
 	private ArrayList<ActiveFilter> filters = new ArrayList<ActiveFilter>();
 	private RecipeAdapter recipeAdapter;
@@ -56,11 +55,20 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 	private AlertDialog deleteFilterDialog = null;
 	private ActiveFilter filterDeletionCandidate = null;
 
+	private Runnable doShowErrorToast = new Runnable() {
+		@Override
+		public void run() {
+			Toast errorToast = Toast.makeText(RecipeBrowser.this, "Unable to get data from the server. Please try again later.", Toast.LENGTH_LONG);
+			errorToast.show();
+		}
+	};
+	
 	private Runnable doRequest = new Runnable() {
 		@Override
 		public void run() {
 			if (!makeServerRequest()) {
 				Log.e(Global.TAG, "Unable to complete server request.");
+				runOnUiThread(doShowErrorToast);
 			}
 		}
 	};
@@ -89,7 +97,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 		recipesList.setAdapter(this.compositeAdapter);
 
 		recipesList.setOnItemClickListener(this);
-		recipesList.setOnItemLongClickListener(this);
+		/*recipesList.setOnItemLongClickListener(this); -- enable for long click listening */
 	}
 
 	@Override
@@ -416,7 +424,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 		}
 	}
 
-	@Override
+	/*@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
 			long id) {
 
@@ -432,7 +440,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 			Log.i(Global.TAG, "Active Filter long clicked.");
 		}
 		return consumed;
-	}
+	}*/
 
 	/* Dialog onClick implementation */
 	@Override

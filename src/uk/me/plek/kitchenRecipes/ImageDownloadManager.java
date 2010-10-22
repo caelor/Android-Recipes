@@ -83,7 +83,6 @@ public class ImageDownloadManager {
 	private static String threadName = "BackgroundImageLoader";
 
 	// the runnable to service the notify queue (on the UI thread)
-	@SuppressWarnings("unused")
 	private Runnable serviceNotifyQueue = new Runnable() {
 
 		@Override

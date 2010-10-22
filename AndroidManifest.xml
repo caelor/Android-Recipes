@@ -23,9 +23,9 @@
     		android:label="ViewCredits">
     	</activity>
 
-    	<activity android:name="ViewRecipe" 
+    	<activity android:name="ActiveRecipes" 
     		android:theme="@android:style/Theme.Light.NoTitleBar"
-    		android:label="ViewRecipe">
+    		android:label="ActiveRecipes">
     		
     		<intent-filter>
     			<action android:name="android.intent.action.VIEW" />
