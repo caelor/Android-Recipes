@@ -23,6 +23,11 @@
     		android:label="ViewCredits">
     	</activity>
 
+    	<activity android:name="ViewRecipe" 
+    		android:theme="@android:style/Theme.Light.NoTitleBar"
+    		android:label="ViewRecipe">
+    	</activity>
+
     	<activity android:name="ActiveRecipes" 
     		android:theme="@android:style/Theme.Light.NoTitleBar"
     		android:label="ActiveRecipes">

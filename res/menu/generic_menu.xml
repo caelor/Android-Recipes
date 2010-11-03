@@ -5,12 +5,19 @@
 		android:enabled="true" 
 		android:visible="true" 
 		android:titleCondensed="@string/menu_prefs_short" 
-		android:title="@string/menu_prefs">
+		android:title="@string/menu_prefs" 
+		android:icon="@android:drawable/ic_menu_preferences">
 	</item>
 	<item android:id="@+id/menuCredits" 
 		android:enabled="true" 
 		android:visible="true" 
 		android:titleCondensed="@string/menu_credits_short" 
-		android:title="@string/menu_credits">
+		android:title="@string/menu_credits" 
+		android:icon="@drawable/ic_menu_allfriends">
+	</item>
+	<item android:id="@+id/menuRefresh" 
+		android:icon="@drawable/ic_menu_refresh" 
+		android:title="@string/menu_refresh" 
+		android:titleCondensed="@string/menu_refresh_short">
 	</item>
 </menu>

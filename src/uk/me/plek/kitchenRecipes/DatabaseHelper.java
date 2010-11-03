@@ -18,6 +18,7 @@ public class DatabaseHelper {
 	public static final String RECIPE_TITLE = "Title";
 	public static final String RECIPE_STARTTIME = "StartTime";
 	public static final String RECIPE_IMAGE = "Image";
+	public static final String RECIPE_URI = "SourceURI";
 
 	private Activity context;
 	private SQLiteDatabase db = null;
@@ -59,7 +60,7 @@ public class DatabaseHelper {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			int currVersion = oldVersion;
-			String sql;
+			//String sql;
 			
 			if ((currVersion < 1) && (newVersion >= 1)) {
 				// steps to upgrade to schema 1.
@@ -120,7 +121,8 @@ public class DatabaseHelper {
 	
 	public Cursor getActiveRecipesCursor() {
 		Cursor retval = this.db.query("activerecipes", new String[] { 
-				android.provider.BaseColumns._ID, "Title", "StartTime"
+				android.provider.BaseColumns._ID, DatabaseHelper.RECIPE_TITLE, 
+				DatabaseHelper.RECIPE_STARTTIME, DatabaseHelper.RECIPE_URI
 		}, null, null, null, null, "StartTime");
 		return retval;
 	}
@@ -147,7 +149,7 @@ public class DatabaseHelper {
 		Date now = new Date();
 		cv.put("StartTime", now.getTime());
 		
-		long rowId = db.insert("activerecipes", "Title", cv);
+		/*long rowId = */db.insert("activerecipes", "Title", cv);
 	}
 	
 	public String getXMLForRecipeBySourceUri(String sourceUri) {

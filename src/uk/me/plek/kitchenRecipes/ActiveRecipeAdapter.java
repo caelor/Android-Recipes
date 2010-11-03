@@ -9,7 +9,6 @@ public class ActiveRecipeAdapter extends SimpleCursorAdapter {
 	public ActiveRecipeAdapter(Context context, int layout, Cursor c,
 			String[] from, int[] to) {
 		super(context, layout, c, from, to);
-		// TODO Auto-generated constructor stub
 	}
 
 }

@@ -13,18 +13,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ViewFlipper;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
@@ -47,11 +46,7 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 	private DatabaseHelper dbConn;
 	private ListView recipesList;
 	private String currentRecipeUri; // a string uri describing the current recipe. Used by the display recipe routines.
-	private FullRecipe currentRecipe;
-	private String currentRecipeHTML;
 	private ProgressDialog loadingRecipeDialog;
-	private boolean showingRecipe = false;
-	private long tempRowId;
 
 
 	/** Called when the activity is first created. */
@@ -61,8 +56,6 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 		setContentView(R.layout.active_recipes);
 
 		recipesList = (ListView)findViewById(R.id.ActiveRecipeList);
-		ViewFlipper f = (ViewFlipper)findViewById(R.id.RecipeViewFlipper);
-		f.setDisplayedChild(0);
 
 		openingDbDialog = ProgressDialog.show(this, "Please wait...", "Loading data", true);
 		dbConn = new DatabaseHelper(this, this);
@@ -85,22 +78,18 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 
-		if (this.showingRecipe) {
-			inflater.inflate(R.menu.active_recipe_menu, menu);
-		}
-		else {
-			inflater.inflate(R.menu.active_recipes_list_menu, menu);
-		}
+		inflater.inflate(R.menu.active_recipes_list_menu, menu);
 
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO handle this...
 		Intent i;
 		switch (item.getItemId()) {
 		case R.id.menuShowActiveRecipes:
-			runOnUiThread(doShowActiveRecipes);
+//			runOnUiThread(doShowActiveRecipes);
 			return true;
 		case R.id.menuCredits:
 			i = new Intent(getApplicationContext(), ViewCredits.class);
@@ -123,7 +112,8 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 		Cursor c = dbConn.getActiveRecipesCursor();
 		String[] from = new String[] { 
 				DatabaseHelper.RECIPE_TITLE,
-				DatabaseHelper.RECIPE_STARTTIME
+				DatabaseHelper.RECIPE_STARTTIME,
+				DatabaseHelper.RECIPE_URI
 		};
 
 		int[] to = new int[] { 
@@ -168,8 +158,13 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 			}
 			else {
 				this.currentRecipeUri = ourIntent.getDataString();
-				Thread t = new Thread(null, doGetRecipeFromDBBySourceUri, "backgroundRecipeLoading");
-				t.start();
+				Intent i = new Intent(getApplicationContext(), ViewRecipe.class);
+				
+				i.setData(Uri.parse(String.valueOf(this.currentRecipeUri)));
+				
+				loadingRecipeDialog.dismiss();
+				loadingRecipeDialog = null;
+				startActivity(i);
 			}
 		}
 		else if (ourIntent.getAction().equals(ActiveRecipes.ACTION_STATUS_CALLBACK)) {
@@ -180,102 +175,6 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 			Log.e(Global.TAG, "Got an intent with an unexpected action: " + ourIntent.getAction());
 		}
 	}
-
-	private String getRecipeHTML(FullRecipe recipe) {
-		RecipeTemplater templater = RecipeTemplater.templateBuilder("default"); // TODO: implement other styles
-		return templater.generateStyledRecipe(recipe); 
-	}
-
-	Runnable doShowRecipe = new Runnable() {
-		// intended to be run on the ui thread.
-
-		@Override
-		public void run() {
-			WebView wv = (WebView)findViewById(R.id.recipeWebView);
-			String mimetype = "text/html";
-			String encoding = "UTF-8";
-			wv.loadData(currentRecipeHTML, mimetype, encoding);
-
-			ViewFlipper vf = (ViewFlipper)findViewById(R.id.RecipeViewFlipper);
-			vf.setInAnimation(AnimationHelper.centreSpinViewInAnimation());
-			vf.setOutAnimation(AnimationHelper.centreSpinViewOutAnimation());
-			vf.setDisplayedChild(1);
-			showingRecipe = true;
-
-		}
-
-	};
-
-	Runnable doShowActiveRecipes = new Runnable() {
-		// intended to be run on the ui thread.
-
-		@Override
-		public void run() {
-			ViewFlipper vf = (ViewFlipper)findViewById(R.id.RecipeViewFlipper);
-			vf.setInAnimation(AnimationHelper.centreSpinViewInAnimation());
-			vf.setOutAnimation(AnimationHelper.centreSpinViewOutAnimation());
-			vf.setDisplayedChild(0);
-			showingRecipe = false;
-
-		}
-
-	};
-
-	Runnable doGetRecipeFromDBByRowId = new Runnable() {
-
-		@Override
-		public void run() {
-			currentRecipeUri = dbConn.getSourceUriByRowId(tempRowId);
-
-			doGetRecipeFromDBBySourceUri.run();
-		}
-
-	};
-
-	Runnable doGetRecipeFromDBBySourceUri = new Runnable() {
-
-		@Override
-		public void run() {
-			try {
-				String xml = dbConn.getXMLForRecipeBySourceUri(currentRecipeUri);
-				XMLRecipeDocument doc = new XMLRecipeDocument(xml);
-
-				if (doc.isValid) {
-					if (doc.getRecipes().size() == 1) {
-						// we've found our fullrecipe...
-						BasicRecipe foo = doc.getRecipes().get(0);
-						if (foo instanceof FullRecipe) {
-							FullRecipe recipe = (FullRecipe)foo;
-
-							currentRecipe = recipe;
-							currentRecipeHTML = getRecipeHTML(recipe);
-							runOnUiThread(doShowRecipe);
-						}
-						else {
-							runOnUiThread(doShowLoadRecipeErrorToast);
-							Exception e = new Exception("Exactly 1 recipe found, but it's not a full recipe. Recipe is in DB.");
-							ErrorReporter.getInstance().handleSilentException(e); // DEBUG - for PHP script
-						}
-					}
-					else {
-						// it's either no recipes, or more than 1. Either way, we're not happy with it.
-						runOnUiThread(doShowLoadRecipeErrorToast);
-						Exception e = new Exception("Invalid number of recipes: " + doc.getRecipes().size() + " in cached DB copy. ");
-						ErrorReporter.getInstance().handleSilentException(e); // DEBUG - for PHP script
-					}
-
-				}
-				else {
-					runOnUiThread(doShowLoadRecipeErrorToast);
-				}
-			} finally {
-				runOnUiThread(dismissLoadingDialog);
-			}
-
-
-		}
-
-	};
 
 	Runnable doDownloadRecipe = new Runnable() {
 
@@ -310,9 +209,10 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 										null
 								); // TODO: images aren't supported yet.
 
-								currentRecipe = recipe;
-								currentRecipeHTML = getRecipeHTML(recipe);
-								runOnUiThread(doShowRecipe);
+								Intent i = new Intent(getApplicationContext(), ViewRecipe.class);
+								i.setData(Uri.parse(String.valueOf(currentRecipeUri)));
+								startActivity(i);
+
 							}
 							else {
 								runOnUiThread(doShowLoadRecipeErrorToast);
@@ -351,11 +251,13 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 
 		}
 	};
-
+	
 	Runnable doShowLoadRecipeErrorToast = new Runnable() {
 
 		@Override
 		public void run() {
+			Toast errorToast = Toast.makeText(ActiveRecipes.this, "Unable to load the recipe. Check your configuration, or try again later.", Toast.LENGTH_LONG);
+			errorToast.show();
 		}
 	};
 
@@ -372,9 +274,13 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 
 	@Override
 	public void onItemClick(AdapterView<?> parentView, View view, int position, long id) {
-		this.tempRowId = this.compositeAdapter.getItemId(position);
-		Thread t = new Thread(null, doGetRecipeFromDBByRowId, "backgroundRecipeLoading");
-		t.start();
+		Intent i = new Intent(getApplicationContext(), ViewRecipe.class);
+		
+		Cursor c = (Cursor)parentView.getItemAtPosition(position);
+		String uri = c.getString(c.getColumnIndex(DatabaseHelper.RECIPE_URI));
+		
+		i.setData(Uri.parse(String.valueOf(uri)));
+		startActivity(i);
 	}
 
 }

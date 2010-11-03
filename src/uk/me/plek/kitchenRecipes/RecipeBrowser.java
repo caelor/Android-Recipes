@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class RecipeBrowser extends Activity implements OnItemClickListener, /*OnItemLongClickListener,*/ OnClickListener, FilterChooserCallback {
@@ -48,10 +49,10 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 	private Runnable doShowErrorToast = new Runnable() {
 		@Override
 		public void run() {
-			//Toast errorToast = Toast.makeText(RecipeBrowser.this, "Unable to get data from the server. Please try again later.", Toast.LENGTH_LONG);
-			//errorToast.show();
+			Toast errorToast = Toast.makeText(RecipeBrowser.this, "Unable to get data from the server. Check your configuration, or try again later.", Toast.LENGTH_LONG);
+			errorToast.show();
 
-			new AlertDialog.Builder(RecipeBrowser.this)
+			/*new AlertDialog.Builder(RecipeBrowser.this)
 			.setMessage("Unable to contact the server. Please try again later.")
 			.setPositiveButton("OK", new OnClickListener() {
 				@Override
@@ -59,7 +60,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 					RecipeBrowser.this.finish();
 				}
 			})
-			.show();
+			.show();*/
 		}
 	};
 
@@ -143,6 +144,13 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 		case R.id.menuCredits:
 			i = new Intent(getApplicationContext(), ViewCredits.class);
 			startActivity(i);
+			return true;
+		case R.id.menuRefresh:
+			if (this.dialog != null) { Log.e(Global.TAG, "Attempting to create a new dialog when one is already active."); }
+			this.dialog = ProgressDialog.show(RecipeBrowser.this, "Please wait...", "Retrieving data...", true);
+
+			Thread thread = new Thread(null, doRequest, "BackgroundRecipeFetch");
+			thread.start();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

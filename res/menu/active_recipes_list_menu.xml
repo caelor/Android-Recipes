@@ -4,13 +4,15 @@
 	<item android:id="@+id/menuPrefs" 
 		android:enabled="true" 
 		android:visible="true" 
-		android:titleCondensed="@string/menu_prefs_short" 
+		android:titleCondensed="@string/menu_prefs_short"
+		android:icon="@android:drawable/ic_menu_preferences" 
 		android:title="@string/menu_prefs">
 	</item>
 	<item android:id="@+id/menuCredits" 
 		android:enabled="true" 
 		android:visible="true" 
-		android:titleCondensed="@string/menu_credits_short" 
+		android:titleCondensed="@string/menu_credits_short"
+		android:icon="@drawable/ic_menu_allfriends" 
 		android:title="@string/menu_credits">
 	</item>
 </menu>

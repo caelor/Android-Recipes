@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="menu_refresh_short">Refresh</string>
+    <string name="menu_refresh">Refresh Recipes List</string>
     <string name="add_filter_title">Add Filter</string>
     <string name="add_filter_help">Tap to add filter</string>
     <string name="active_filters_heading">Filters &amp; Sorting</string>
 	<string name="recipes_heading">Recipes</string>
     <string name="menu_prefs_short">Prefs</string>
     <string name="menu_prefs">Preferences</string>
-    <string name="menu_showactive_short">Active List</string>
+    <string name="menu_showactive_short">Active Recipes</string>
     <string name="menu_showactive">View Active Recipes</string>
     <string name="menu_credits_short">Credits</string>
     <string name="menu_credits">View Credits</string>
