@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements DownloadListener {
@@ -50,6 +51,7 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 			TextView prepTime = (TextView) v.findViewById(R.id.RecipePrepTime);
 			TextView cookTime = (TextView) v.findViewById(R.id.RecipeCookTime);
 			TextView yield = (TextView) v.findViewById(R.id.RecipeYield);
+			RatingBar rating = (RatingBar) v.findViewById(R.id.RecipeRating);
 			
 			if (preview != null) {
 				// initially, set a random pepper, while the image gets loaded in the background
@@ -98,6 +100,18 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 				else {
 					yield.setVisibility(TextView.VISIBLE);
 					yield.setText("Yield: " + r.getYieldFriendly());
+				}
+			}
+			if (rating != null) {
+				if (r.getRating().length() == 0) {
+					rating.setVisibility(RatingBar.GONE);
+				}
+				else {
+					rating.setVisibility(RatingBar.VISIBLE);
+					String ratingString = r.getRating();
+					int actualRating = Integer.valueOf(ratingString);
+					rating.setMax(10);
+					rating.setProgress(actualRating);
 				}
 			}
 		}
