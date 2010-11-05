@@ -202,6 +202,9 @@ public class DatabaseHelper {
 				if (recipeCount == 0) {
 					shouldRemove = true;
 				}
+				else if (recipeCount == 1) {
+					ticker = "There is 1 active recipe.";
+				}
 				else {
 					ticker = "There are " + String.valueOf(recipeCount) + " active recipes";
 				}
