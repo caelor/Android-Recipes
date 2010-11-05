@@ -7,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import uk.me.plek.kitchenRecipes.DatabaseHelper.DatabaseEventListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -27,7 +29,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class RecipeBrowser extends Activity implements OnItemClickListener, /*OnItemLongClickListener,*/ OnClickListener, FilterChooserCallback {
+public class RecipeBrowser extends Activity implements OnItemClickListener, /*OnItemLongClickListener,*/ OnClickListener, FilterChooserCallback, DatabaseEventListener {
 	private RecipeAdapter recipeAdapter;
 	private FilterAdapter filterAdapter;
 	private String recipeAdapterHeadingText;
@@ -45,6 +47,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 	private AlertDialog deleteFilterDialog = null;
 	private ActiveFilter filterDeletionCandidate = null;
 	private XMLRecipeDocument recipeDocument = new XMLRecipeDocument();
+	private DatabaseHelper dbHelper;
 
 	private Runnable doShowErrorToast = new Runnable() {
 		@Override
@@ -97,6 +100,8 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 
 		recipesList.setOnItemClickListener(this);
 		/*recipesList.setOnItemLongClickListener(this); -- enable for long click listening */
+		
+		dbHelper = new DatabaseHelper(this, this);
 	}
 
 	@Override
@@ -356,5 +361,11 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 		Thread thread = new Thread(null, doRequest, "BackgroundRecipeFetch");
 		thread.start();
 
+	}
+
+	@Override
+	public void databaseOpenedCallback() {
+		// update the status bar.
+		dbHelper.updateNotificationMessage(this);
 	}
 }

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -76,11 +75,9 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 	@Override
 	public void databaseOpenedCallback() {
 		// called by databasehelper when the database has been opened.
-		//if (openingDbDialog != null) {
-		//	openingDbDialog.dismiss();
-		//	openingDbDialog = null;
-		//}
 
+		dbConn.updateNotificationMessage(this);
+		
 		// we've now got an active DB connection, and have set up the listview.
 		// we need to see what intent we were called by, and then possibly load and run
 		// a recipe.
