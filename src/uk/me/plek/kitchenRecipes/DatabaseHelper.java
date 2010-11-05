@@ -1,6 +1,7 @@
 package uk.me.plek.kitchenRecipes;
 
 import java.sql.Blob;
+import java.text.DateFormat;
 import java.util.Date;
 
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.format.DateUtils;
 
 public class DatabaseHelper {
 	private static final String DB_NAME = "recipes.db";
@@ -235,5 +237,25 @@ public class DatabaseHelper {
 				statusBarNotification = null;
 			}
 		}
+	}
+	
+	
+	public static CharSequence decodeStartDate(Context context, long millis) {
+		CharSequence retval = "Start Time Unknown";
+		
+		int flags = 0;
+		flags |= DateUtils.FORMAT_SHOW_TIME;
+		//flags |= DateUtils.FORMAT_SHOW_WEEKDAY;
+		//flags |= DateUtils.FORMAT_SHOW_DATE;
+		flags |= DateUtils.FORMAT_ABBREV_RELATIVE;
+		
+		retval = "Recipe started " + DateUtils.getRelativeDateTimeString(
+				context, 
+				millis, 
+				DateUtils.SECOND_IN_MILLIS, 
+				DateUtils.WEEK_IN_MILLIS, 
+				flags);
+	
+		return retval;
 	}
 }

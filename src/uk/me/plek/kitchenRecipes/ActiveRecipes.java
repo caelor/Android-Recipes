@@ -113,19 +113,9 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 
 		// now get the cursor for the listview
 		Cursor c = dbConn.getActiveRecipesCursor();
-		String[] from = new String[] { 
-				DatabaseHelper.RECIPE_TITLE,
-				DatabaseHelper.RECIPE_STARTTIME,
-				DatabaseHelper.RECIPE_URI
-		};
-
-		int[] to = new int[] { 
-				R.id.ActiveRecipeTitle,
-				R.id.ActiveRecipeStartTime
-		};
 
 		// add the RecipeAdapter to the Recipe List
-		this.activeRecipes = new ActiveRecipeAdapter(this, R.layout.active_recipe_row, c, from, to);
+		this.activeRecipes = new ActiveRecipeAdapter(this, c);
 
 		// set up the composite list adapter (so we get a section heading)
 		this.compositeAdapter = new SeparatedListAdapter(this);
