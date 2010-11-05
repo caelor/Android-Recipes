@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
  	xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/menuPrefs" 
+	<item android:id="@+id/menuActiveListPrefs" 
 		android:enabled="true" 
 		android:visible="true" 
 		android:titleCondensed="@string/menu_prefs_short"
 		android:icon="@android:drawable/ic_menu_preferences" 
 		android:title="@string/menu_prefs">
 	</item>
-	<item android:id="@+id/menuCredits" 
+	<item android:id="@+id/menuActiveListCredits" 
 		android:enabled="true" 
 		android:visible="true" 
 		android:titleCondensed="@string/menu_credits_short"

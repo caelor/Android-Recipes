@@ -8,11 +8,18 @@
 		android:icon="@drawable/ic_menu_friendslist"
 		android:title="@string/menu_showactive">
 	</item>
-	<item android:id="@+id/menuCredits" 
+	<item android:id="@+id/menuActiveRecipeCredits" 
 		android:enabled="true" 
 		android:visible="true" 
 		android:titleCondensed="@string/menu_credits_short" 
 		android:icon="@drawable/ic_menu_allfriends"
 		android:title="@string/menu_credits">
+	</item>
+	<item android:id="@+id/menuEndRecipe" 
+		android:enabled="true" 
+		android:visible="true" 
+		android:titleCondensed="@string/menu_end_recipe_short" 
+		android:icon="@android:drawable/ic_menu_close_clear_cancel"
+		android:title="@string/menu_end_recipe">
 	</item>
 </menu>

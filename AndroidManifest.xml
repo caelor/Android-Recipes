@@ -8,29 +8,35 @@
         <activity android:name=".RecipeBrowser"
 
         	android:theme="@android:style/Theme.Light.NoTitleBar"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:taskAffinity="uk.me.plek.android.recipes.RecipeBrowsing"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-	    <activity android:name="RecipePreferences" android:label="@string/menu_prefs">
+	    <activity android:name="RecipePreferences" 
+	    	android:label="@string/menu_prefs">
     	</activity>
     	
     	<activity android:name="ViewCredits" 
     		android:theme="@android:style/Theme.Light.NoTitleBar"
-    		android:label="ViewCredits">
+    		android:label="ViewCredits"
+    		android:allowTaskReparenting="true">
     	</activity>
 
     	<activity android:name="ViewRecipe" 
     		android:theme="@android:style/Theme.Light.NoTitleBar"
-    		android:label="ViewRecipe">
+    		android:label="ViewRecipe"
+    		android:taskAffinity="uk.me.plek.android.recipes.ActiveRecipes">
     	</activity>
 
     	<activity android:name="ActiveRecipes" 
     		android:theme="@android:style/Theme.Light.NoTitleBar"
-    		android:label="ActiveRecipes">
+    		android:label="ActiveRecipes"
+    		android:taskAffinity="uk.me.plek.android.recipes.ActiveRecipes">
     		
     		<intent-filter>
     			<action android:name="android.intent.action.VIEW" />

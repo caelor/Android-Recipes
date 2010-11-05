@@ -60,12 +60,16 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 		Intent i;
 		switch (item.getItemId()) {
 		case R.id.menuShowActiveRecipes:
-			i = new Intent(getApplicationContext(), ActiveRecipes.class);
-			startActivity(i);
+			//i = new Intent(getApplicationContext(), ActiveRecipes.class);
+			//startActivity(i);
 			return true;
-		case R.id.menuCredits:
+		case R.id.menuActiveRecipeCredits:
 			i = new Intent(getApplicationContext(), ViewCredits.class);
 			startActivity(i);
+			return true;
+		case R.id.menuEndRecipe:
+			Thread t = new Thread(null, doCancelCurrentRecipe, "backgroundRecipeDelete");
+			t.start();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -189,6 +193,15 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 			String encoding = "UTF-8";
 
 			webview.loadData(currentRecipeHTML, mimetype, encoding);
+		}
+	};
+
+	Runnable doCancelCurrentRecipe = new Runnable() {
+
+		@Override
+		public void run() {
+			dbConn.deleteRecipeByUri(currentRecipeUri);
+			ViewRecipe.this.finish();
 		}
 	};
 

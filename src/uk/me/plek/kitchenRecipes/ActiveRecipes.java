@@ -48,6 +48,7 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 	private String currentRecipeUri; // a string uri describing the current recipe. Used by the display recipe routines.
 	private ProgressDialog loadingRecipeDialog;
 	private Cursor adapterCursor = null;
+	private boolean processIntent = true;
 
 
 	/** Called when the activity is first created. */
@@ -59,7 +60,6 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 		recipesList = (ListView)findViewById(R.id.ActiveRecipeList);
 
 		openingDbDialog = ProgressDialog.show(this, "Please wait...", "Loading data", true);
-		dbConn = new DatabaseHelper(this, this);
 	}
 
 	@Override
@@ -71,12 +71,20 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 		authUser = prefs.getString("authUsername", "");
 		authPass = prefs.getString("authPassword", "");
 
+		dbConn = new DatabaseHelper(this, this);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		dbConn.close();
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		
+
 		if (this.adapterCursor != null) {
 			if (!this.adapterCursor.isClosed()) {
 				this.adapterCursor.close();
@@ -102,7 +110,7 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 		case R.id.menuShowActiveRecipes:
 			//			runOnUiThread(doShowActiveRecipes);
 			return true;
-		case R.id.menuCredits:
+		case R.id.menuActiveListCredits:
 			i = new Intent(getApplicationContext(), ViewCredits.class);
 			startActivity(i);
 			return true;
@@ -119,8 +127,6 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 			openingDbDialog = null;
 		}
 
-		// set up the statusbar notifications.
-		dbConn.updateNotificationMessage(this);
 
 		// now get the cursor for the listview
 		adapterCursor = dbConn.getActiveRecipesCursor();
@@ -139,49 +145,54 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 		//activeRecipes.setOnItemLongClickListener(this);
 		recipesList.setOnItemClickListener(this);
 
+		// set up the statusbar notifications.
+		dbConn.updateNotificationMessage(this);
 
-		// we've now got an active DB connection, and have set up the listview.
-		// we need to see what intent we were called by, and then possibly load and run
-		// a recipe.
-		Intent ourIntent = this.getIntent();
+		if (this.processIntent) {
+			// we've now got an active DB connection, and have set up the listview.
+			// we need to see what intent we were called by, and then possibly load and run
+			// a recipe.
+			Intent ourIntent = this.getIntent();
 
-		if (ourIntent.getAction() != null) {
-			if (ourIntent.getAction().equals(Intent.ACTION_VIEW)) {
-				// we've been asked to view something.
+			if (ourIntent.getAction() != null) {
+				if (ourIntent.getAction().equals(Intent.ACTION_VIEW)) {
+					// we've been asked to view something.
 
-				// we should now show a progress dialog.
-				loadingRecipeDialog = ProgressDialog.show(this, "Please wait", "Loading Recipe...", true);
+					// we should now show a progress dialog.
+					loadingRecipeDialog = ProgressDialog.show(this, "Please wait", "Loading Recipe...", true);
 
-				// do we already have that recipe as an active recipe?
-				boolean recipeOpen = dbConn.isRecipeActive(ourIntent.getDataString());
+					// do we already have that recipe as an active recipe?
+					boolean recipeOpen = dbConn.isRecipeActive(ourIntent.getDataString());
 
-				if (!recipeOpen) {
-					// we need to load the recipe information first...
-					this.currentRecipeUri = ourIntent.getDataString();
-					Thread t = new Thread(null, doDownloadRecipe, "backgroundRecipeDownload");
-					t.start();
+					if (!recipeOpen) {
+						// we need to load the recipe information first...
+						this.currentRecipeUri = ourIntent.getDataString();
+						Thread t = new Thread(null, doDownloadRecipe, "backgroundRecipeDownload");
+						t.start();
+					}
+					else {
+						this.currentRecipeUri = ourIntent.getDataString();
+						Intent i = new Intent(getApplicationContext(), ViewRecipe.class);
+
+						i.setData(Uri.parse(String.valueOf(this.currentRecipeUri)));
+
+						loadingRecipeDialog.dismiss();
+						loadingRecipeDialog = null;
+						startActivity(i);
+					}
+				}
+				else if (ourIntent.getAction().equals(ActiveRecipes.ACTION_STATUS_CALLBACK)) {
+					// our callback from the status bar. We're already showing the active recipes, so
+					// we should be fine.
 				}
 				else {
-					this.currentRecipeUri = ourIntent.getDataString();
-					Intent i = new Intent(getApplicationContext(), ViewRecipe.class);
-
-					i.setData(Uri.parse(String.valueOf(this.currentRecipeUri)));
-
-					loadingRecipeDialog.dismiss();
-					loadingRecipeDialog = null;
-					startActivity(i);
+					Log.e(Global.TAG, "Got an intent with an unexpected action: " + ourIntent.getAction());
 				}
 			}
-			else if (ourIntent.getAction().equals(ActiveRecipes.ACTION_STATUS_CALLBACK)) {
-				// our callback from the status bar. We're already showing the active recipes, so
-				// we should be fine.
-			}
 			else {
-				Log.e(Global.TAG, "Got an intent with an unexpected action: " + ourIntent.getAction());
+				Log.e(Global.TAG, "Received intent without an action.");
 			}
-		}
-		else {
-			Log.e(Global.TAG, "Received intent without an action.");
+			processIntent = false;
 		}
 	}
 

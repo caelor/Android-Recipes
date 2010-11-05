@@ -12,6 +12,8 @@
     <string name="menu_showactive">View Active Recipes</string>
     <string name="menu_credits_short">Credits</string>
     <string name="menu_credits">View Credits</string>
+    <string name="menu_end_recipe_short">End</string>
+    <string name="menu_end_recipe">End This Recipe</string>
     <string name="recipes_url_password_summary">The password to access the recipes database (if required).</string>
     <string name="recipes_url_password">Password</string>
     <string name="recipes_url_username_summary">The username to access the recipes database (if required).</string>

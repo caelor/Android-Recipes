@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
  	xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/menuPrefs" 
+	<item android:id="@+id/menuGenericPrefs" 
 		android:enabled="true" 
 		android:visible="true" 
 		android:titleCondensed="@string/menu_prefs_short" 
 		android:title="@string/menu_prefs" 
 		android:icon="@android:drawable/ic_menu_preferences">
 	</item>
-	<item android:id="@+id/menuCredits" 
+	<item android:id="@+id/menuGenericCredits" 
 		android:enabled="true" 
 		android:visible="true" 
 		android:titleCondensed="@string/menu_credits_short" 
 		android:title="@string/menu_credits" 
 		android:icon="@drawable/ic_menu_allfriends">
 	</item>
-	<item android:id="@+id/menuRefresh" 
+	<item android:id="@+id/menuBrowseRefresh" 
 		android:icon="@drawable/ic_menu_refresh" 
 		android:title="@string/menu_refresh" 
 		android:titleCondensed="@string/menu_refresh_short">

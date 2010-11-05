@@ -210,6 +210,7 @@ public class DatabaseHelper {
 					ticker = "There are " + String.valueOf(recipeCount) + " active recipes";
 				}
 			}
+			c.close();
 		}
 
 
@@ -222,9 +223,11 @@ public class DatabaseHelper {
 			}
 
 			// set up some intents
-			Intent notificationIntent = new Intent(parent, ActiveRecipes.class);
+			// we use application contexts so it's the same notification no matter which activity we
+			// got called from
+			Intent notificationIntent = new Intent(parent.getApplicationContext(), ActiveRecipes.class);
 			notificationIntent.setAction(ActiveRecipes.ACTION_STATUS_CALLBACK);
-			PendingIntent contentIntent = PendingIntent.getActivity(parent, 0, notificationIntent, 0);
+			PendingIntent contentIntent = PendingIntent.getActivity(parent.getApplicationContext(), 0, notificationIntent, 0);
 
 			statusBarNotification.flags |= Notification.FLAG_ONGOING_EVENT;
 			statusBarNotification.number = recipeCount;
@@ -243,6 +246,11 @@ public class DatabaseHelper {
 		}
 	}
 	
+	public void deleteRecipeByUri(String uri) {
+		if (db != null) {
+			db.delete("activerecipes", "SourceURI=?", new String[] { uri });
+		}
+	}
 	
 	public static CharSequence decodeStartDate(Context context, long millis) {
 		CharSequence retval = "Start Time Unknown";
