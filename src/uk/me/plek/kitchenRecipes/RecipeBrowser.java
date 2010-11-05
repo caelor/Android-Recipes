@@ -262,7 +262,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 			// this basically means we should fire off an intent to show that particular recipe.
 			// broadcast an intent with a scheme of "recipe://"...
 			Intent i = new Intent(Intent.ACTION_VIEW);
-			String url = this.baseUrl + this.relativeUri + "/recipe/" + recipe.identifier;
+			String url = this.baseUrl + "/recipe/" + recipe.identifier;
 			url = url.replace("http://", "recipe://");
 			i.setData(Uri.parse(url));
 			startActivity(i);
