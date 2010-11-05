@@ -142,15 +142,15 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent i;
 		switch (item.getItemId()) {
-		case R.id.menuPrefs:
+		case R.id.menuGenericPrefs:
 			i = new Intent(getApplicationContext(), RecipePreferences.class);
 			startActivity(i);
 			return true;
-		case R.id.menuCredits:
+		case R.id.menuGenericCredits:
 			i = new Intent(getApplicationContext(), ViewCredits.class);
 			startActivity(i);
 			return true;
-		case R.id.menuRefresh:
+		case R.id.menuBrowseRefresh:
 			if (this.dialog != null) { Log.e(Global.TAG, "Attempting to create a new dialog when one is already active."); }
 			this.dialog = ProgressDialog.show(RecipeBrowser.this, "Please wait...", "Retrieving data...", true);
 
@@ -262,7 +262,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 			// this basically means we should fire off an intent to show that particular recipe.
 			// broadcast an intent with a scheme of "recipe://"...
 			Intent i = new Intent(Intent.ACTION_VIEW);
-			String url = this.baseUrl + this.relativeUri + "recipe/" + recipe.identifier;
+			String url = this.baseUrl + this.relativeUri + "/recipe/" + recipe.identifier;
 			url = url.replace("http://", "recipe://");
 			i.setData(Uri.parse(url));
 			startActivity(i);
