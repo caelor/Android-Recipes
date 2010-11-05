@@ -47,6 +47,7 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 	private ListView recipesList;
 	private String currentRecipeUri; // a string uri describing the current recipe. Used by the display recipe routines.
 	private ProgressDialog loadingRecipeDialog;
+	private Cursor adapterCursor = null;
 
 
 	/** Called when the activity is first created. */
@@ -72,6 +73,16 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		if (this.adapterCursor != null) {
+			if (!this.adapterCursor.isClosed()) {
+				this.adapterCursor.close();
+			}
+		}
+	}
 
 	/* Menu handling methods */
 	@Override
@@ -112,10 +123,10 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 		dbConn.updateNotificationMessage(this);
 
 		// now get the cursor for the listview
-		Cursor c = dbConn.getActiveRecipesCursor();
+		adapterCursor = dbConn.getActiveRecipesCursor();
 
 		// add the RecipeAdapter to the Recipe List
-		this.activeRecipes = new ActiveRecipeAdapter(this, c);
+		this.activeRecipes = new ActiveRecipeAdapter(this, adapterCursor);
 
 		// set up the composite list adapter (so we get a section heading)
 		this.compositeAdapter = new SeparatedListAdapter(this);
