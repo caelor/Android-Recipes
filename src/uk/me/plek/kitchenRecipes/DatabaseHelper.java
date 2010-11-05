@@ -1,7 +1,6 @@
 package uk.me.plek.kitchenRecipes;
 
 import java.sql.Blob;
-import java.text.DateFormat;
 import java.util.Date;
 
 import android.app.Activity;
