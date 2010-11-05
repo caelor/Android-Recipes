@@ -169,6 +169,8 @@ public class DatabaseHelper {
 			curs.moveToFirst();
 			retval = curs.getString(0);
 		}
+		
+		curs.close();
 
 		return retval;
 	}
