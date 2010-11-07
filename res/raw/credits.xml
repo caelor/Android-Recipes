@@ -45,6 +45,25 @@
 				<span class="licence">Copyright 2010 - ScreamingToaster LLC.</span>
 				<span class="notes">Raw Resource loading code, WebView handling.</span>
 			</div>
+
+			<div class="credit">
+				<span class="title">&quot;Timeless&quot; font</span>
+				<span class="author">Manfred Klien</span>
+				<span class="author_url"><a href="http://manfred-klein.ina-mar.com/">http://manfred-klein.ina-mar.com/</a></span>
+				<span class="source"><a href="http://www.dafont.com/timeless.font">DAFont</a></span>
+				<span class="licence">Free</span>
+				<span class="notes">Used by the recipe display template.</span>
+			</div>
+
+			<div class="credit">
+				<span class="title">&quot;Writing Stuff&quot; font</span>
+				<span class="author">Brittney Murphy</span>
+				<span class="author_url"><a href="http://www.dafont.com/brittney-murphy.d2425?psize=s">http://www.dafont.com/brittney-murphy.d2425</a></span>
+				<span class="source"><a href="http://www.dafont.com/brittney-murphy.d2425?psize=s">DAFont</a></span>
+				<span class="licence">Free</span>
+				<span class="notes">Used by the recipe display template.</span>
+			</div>
+
 		</div>
 	
 	
@@ -60,6 +79,17 @@
 					<li>Created</li>
 				</ul></span>
 			</div>
+			
+			<div class="version">
+				<span class="major">0</span>
+				<span class="minor">2</span>
+				<span class="type">dev</span>
+				<span class="comment">Limited Development Release</span>
+				<span class="changes"><ul>
+					<li>Basic functionality completed.</li>
+				</ul></span>
+			</div>
+			
 		</div>
 	</body>
 </html>
