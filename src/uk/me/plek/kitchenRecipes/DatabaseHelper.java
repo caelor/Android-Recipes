@@ -17,7 +17,7 @@ import android.text.format.DateUtils;
 
 public class DatabaseHelper {
 	private static final String DB_NAME = "recipes.db";
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 2;
 
 	// field names
 	public static final String RECIPE_TITLE = "Title";
@@ -61,12 +61,21 @@ public class DatabaseHelper {
 			sql = sql + ")";
 			db.execSQL(sql);
 
+			sql = "CREATE TABLE requestCache (";
+			sql = sql +  android.provider.BaseColumns._ID + " INTEGER PRIMARY KEY, ";
+			sql = sql + " requestUri TEXT,";
+			sql = sql + " inProgress BOOLEAN,";
+			sql = sql + " responseXML TEXT, ";
+			sql = sql + " timestamp TIMESTAMP ";
+			sql = sql + ")";
+			db.execSQL(sql);
+
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			int currVersion = oldVersion;
-			//String sql;
+			String sql;
 
 			if ((currVersion < 1) && (newVersion >= 1)) {
 				// steps to upgrade to schema 1.
@@ -79,6 +88,16 @@ public class DatabaseHelper {
 				// steps to upgrade to schema 2.
 				db.beginTransaction();
 
+				sql = "CREATE TABLE requestCache (";
+				sql = sql +  android.provider.BaseColumns._ID + " INTEGER PRIMARY KEY, ";
+				sql = sql + " requestUri TEXT,";
+				sql = sql + " inProgress BOOLEAN,";
+				sql = sql + " responseXML TEXT, ";
+				sql = sql + " timestamp TIMESTAMP ";
+				sql = sql + ")";
+				db.execSQL(sql);
+				
+				db.setTransactionSuccessful();
 				db.endTransaction();
 
 				currVersion = 2;
@@ -132,6 +151,21 @@ public class DatabaseHelper {
 				DatabaseHelper.RECIPE_STARTTIME, DatabaseHelper.RECIPE_URI
 		}, null, null, null, null, "StartTime");
 		return retval;
+	}
+	
+	public int getNumberOfActiveRecipes() {
+		Cursor c = this.db.query("activerecipes", new String[] { 
+				"COUNT(1)"
+		}, null, null, null, null, null);
+		if (c.moveToFirst()) {
+			int retval = c.getInt(0);
+			c.close();
+			return retval;
+		}
+		else {
+			c.close();
+			return -1;
+		}
 	}
 
 	public boolean isRecipeActive(String recipeDataString) {
@@ -269,5 +303,77 @@ public class DatabaseHelper {
 				flags);
 	
 		return retval;
+	}
+	
+	public static CharSequence decodeCachedDate(Context context, long millis) {
+		CharSequence retval = "Start Time Unknown";
+		
+		int flags = 0;
+		flags |= DateUtils.FORMAT_SHOW_TIME;
+		//flags |= DateUtils.FORMAT_SHOW_WEEKDAY;
+		//flags |= DateUtils.FORMAT_SHOW_DATE;
+		flags |= DateUtils.FORMAT_ABBREV_RELATIVE;
+		
+		retval = " [cached " + DateUtils.getRelativeDateTimeString(
+				context, 
+				millis, 
+				DateUtils.SECOND_IN_MILLIS, 
+				DateUtils.WEEK_IN_MILLIS, 
+				flags) + "]";
+	
+		return retval;
+	}
+	
+	public String getCachedServerResponse(String requestUri) {
+		Cursor curs = this.db.query("requestCache", 
+				new String[] { "responseXML" }, 
+				"RequestUri=?", new String[] { requestUri }, null, null, null, "1");
+
+		String retval = null;
+
+		if (curs.getCount() > 0) {
+			curs.moveToFirst();
+			retval = curs.getString(0);
+		}
+
+		return retval;
+
+	}
+
+	public CharSequence getCachedServerResponseTimestamp(Context context, String requestUri) {
+		Cursor curs = this.db.query("requestCache", 
+				new String[] { "timestamp" }, 
+				"RequestUri=?", new String[] { requestUri }, null, null, null, "1");
+
+		String retval = null;
+
+		if (curs.getCount() > 0) {
+			curs.moveToFirst();
+			long timestamp = curs.getLong(0);
+			return DatabaseHelper.decodeCachedDate(context, timestamp);
+		}
+
+		return retval;
+
+	}
+
+	public void deletedOldServerResponses(long maxAge) {
+		Date nowDate = new Date();
+		long nowLong = nowDate.getTime();
+		long limit = nowLong - maxAge;
+		
+		this.db.delete("requestCache", "timestamp < ?", new String[] { String.valueOf(limit) });
+	}
+	
+	public void addServerResponse(String requestUri, String responseXML) {
+		Date nowDate = new Date();
+		long nowLong = nowDate.getTime();
+		
+		ContentValues cv = new ContentValues();
+		cv.put("requestUri", requestUri);
+		cv.put("responseXML", responseXML);
+		cv.put("timestamp", nowLong);
+		
+		this.db.insert("requestCache", "timestamp", cv);
 	}
 }

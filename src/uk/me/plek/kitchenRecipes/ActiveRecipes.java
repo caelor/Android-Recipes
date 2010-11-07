@@ -42,7 +42,7 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 	private SeparatedListAdapter compositeAdapter;
 	private String authUser;
 	private String authPass;
-	private ProgressDialog openingDbDialog;
+	/*private ProgressDialog openingDbDialog;*/
 	private DatabaseHelper dbConn;
 	private ListView recipesList;
 	private String currentRecipeUri; // a string uri describing the current recipe. Used by the display recipe routines.
@@ -59,7 +59,7 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 
 		recipesList = (ListView)findViewById(R.id.ActiveRecipeList);
 
-		openingDbDialog = ProgressDialog.show(this, "Please wait...", "Loading data", true);
+		//openingDbDialog = ProgressDialog.show(this, "Please wait...", "Loading data", true);
 	}
 
 	@Override
@@ -122,10 +122,10 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 	@Override
 	public void databaseOpenedCallback() {
 		// called by databasehelper when the database has been opened.
-		if (openingDbDialog != null) {
+		/*if (openingDbDialog != null) {
 			openingDbDialog.dismiss();
 			openingDbDialog = null;
-		}
+		}*/
 
 
 		// now get the cursor for the listview
@@ -194,6 +194,13 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 			}
 			processIntent = false;
 		}
+		else {
+			// check if we have an empty list, and if so, call finish.
+			int i = dbConn.getNumberOfActiveRecipes();
+			if (i == 0) {
+				finish();
+			}
+		}
 	}
 
 	Runnable doDownloadRecipe = new Runnable() {
@@ -203,7 +210,7 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 			/* Server request for information */
 			String absoluteUrl = currentRecipeUri.replace("recipe://", "http://");
 
-
+			// don't worry about going through the cache, because we already implicitly do that.
 			try {
 				Authenticator.setDefault(new BasicAuthenticator(authUser, authPass));
 
@@ -212,7 +219,9 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 				c.connect();
 
 				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-					XMLRecipeDocument doc = new XMLRecipeDocument(c.getInputStream());
+					XMLRecipeDocument doc = new XMLRecipeDocument(
+							XMLRecipeDocument.inputStreamToString(c.getInputStream())
+							);
 
 					if (doc.isValid) {
 						if (doc.getRecipes().size() == 1) {

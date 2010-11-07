@@ -1,7 +1,6 @@
 package uk.me.plek.kitchenRecipes;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -48,6 +47,8 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 	private ActiveFilter filterDeletionCandidate = null;
 	private XMLRecipeDocument recipeDocument = new XMLRecipeDocument();
 	private DatabaseHelper dbHelper;
+	private Thread backgroundFetchThread = null;
+	private CharSequence cachedMessage = "";
 
 	private Runnable doShowErrorToast = new Runnable() {
 		@Override
@@ -100,33 +101,27 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 
 		recipesList.setOnItemClickListener(this);
 		/*recipesList.setOnItemLongClickListener(this); -- enable for long click listening */
-		
-		dbHelper = new DatabaseHelper(this, this);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		baseUrl = prefs.getString("recipesUrl", "");
-		authUser = prefs.getString("authUsername", "");
-		authPass = prefs.getString("authPassword", "");
+		dbHelper = new DatabaseHelper(this, this);
+	}
 
-		if ((cachedBaseUrl != baseUrl) ||
-				(cachedAuthUser != authUser) ||
-				(cachedAuthPass != authPass)) {
-
-			cachedBaseUrl = baseUrl;
-			cachedAuthUser = authUser;
-			cachedAuthPass = authPass;
-
-			if (dialog != null) { Log.e(Global.TAG, "Attempting to create a new dialog when one is already active."); }
-			dialog = ProgressDialog.show(RecipeBrowser.this, "Please wait...", "Retrieving data...", true);
-
-			Thread thread = new Thread(null, doRequest, "BackgroundRecipeFetch");
-			thread.start();
-		}
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		// be tidy and don't leave dialogs lying around.
+		/* If the screen orientation changes, our background thread doing the fetch
+		 * can stay running. This isn't a problem - we want the fetch to complete,
+		 * but if it tries to dismiss its dialog at the end, then it won't be able
+		 * to, because the view isn't attached to the window manager any more.
+		 */
+		dismissDialog.run();
+		dbHelper.close();
 	}
 
 	/* Menu handling methods */
@@ -151,9 +146,8 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 			startActivity(i);
 			return true;
 		case R.id.menuBrowseRefresh:
-			if (this.dialog != null) { Log.e(Global.TAG, "Attempting to create a new dialog when one is already active."); }
-			this.dialog = ProgressDialog.show(RecipeBrowser.this, "Please wait...", "Retrieving data...", true);
-
+			dbHelper.deletedOldServerResponses(0); // delete all cached responses
+			
 			Thread thread = new Thread(null, doRequest, "BackgroundRecipeFetch");
 			thread.start();
 			return true;
@@ -169,41 +163,60 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 
 		String absoluteUrl = this.baseUrl + this.relativeUri;
 
-		try {
-
-			Authenticator.setDefault(new BasicAuthenticator(this.authUser, this.authPass));
-
-			HttpURLConnection c = (HttpURLConnection) new URL(absoluteUrl).openConnection();
-			c.setUseCaches(false);
-			c.connect();
-
-			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				parseResponse(c.getInputStream());
-			}
-			else {
-				runOnUiThread(doShowErrorToast);
+		dbHelper.deletedOldServerResponses(Global.REQUEST_CACHE_MAX_AGE);
+		String cachedValue = dbHelper.getCachedServerResponse(absoluteUrl); 
+		if (cachedValue != null) {
+			try {
+				cachedMessage = dbHelper.getCachedServerResponseTimestamp(this, absoluteUrl);
+				parseResponse(cachedValue);
+			} finally {
+				runOnUiThread(dismissDialog);
 			}
 
-		} catch (MalformedURLException e) {
-			retVal = false;
-			Log.e(Global.TAG, "Malformed URL exception: " + absoluteUrl);
-			e.printStackTrace();
+		}
+		else {
+			cachedMessage = "";
 
-		} catch (IOException e) {
-			retVal = false;
-			Log.e(Global.TAG, "IOException loading recipes");
-			e.printStackTrace();
-		} finally {
-			runOnUiThread(dismissDialog);
+			runOnUiThread(showServerRequestDialog);
+			
+			try {
+
+				Authenticator.setDefault(new BasicAuthenticator(this.authUser, this.authPass));
+
+				HttpURLConnection c = (HttpURLConnection) new URL(absoluteUrl).openConnection();
+				c.setUseCaches(false);
+				c.connect();
+
+				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
+					String response = XMLRecipeDocument.inputStreamToString(c.getInputStream());
+					dbHelper.addServerResponse(absoluteUrl, response);
+					parseResponse(response);
+				}
+				else {
+					runOnUiThread(doShowErrorToast);
+				}
+
+			} catch (MalformedURLException e) {
+				retVal = false;
+				Log.e(Global.TAG, "Malformed URL exception: " + absoluteUrl);
+				e.printStackTrace();
+
+			} catch (IOException e) {
+				retVal = false;
+				Log.e(Global.TAG, "IOException loading recipes");
+				e.printStackTrace();
+			} finally {
+				runOnUiThread(dismissDialog);
+			}
 		}
 
 		return retVal;
 	}
 
 	/* Response parsing */
-	private void parseResponse(InputStream is) {
+	private void parseResponse(String s) {
 		try {
-			recipeDocument.parseNewDocument(is);
+			recipeDocument.parseNewDocument(s);
 		}
 		finally {
 			// make sure UI updates get run on the UI thread.
@@ -220,7 +233,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 			// create new composite adapter - it seems to be the only way we can update the headings
 			compositeAdapter = new SeparatedListAdapter(RecipeBrowser.this);
 			compositeAdapter.addSection(getString(R.string.active_filters_heading) + recipeDocument.getFilterItems(), filterAdapter);
-			compositeAdapter.addSection(getString(R.string.recipes_heading) + recipeDocument.getRecipeItems(), recipeAdapter);
+			compositeAdapter.addSection(getString(R.string.recipes_heading) + recipeDocument.getRecipeItems() + cachedMessage, recipeAdapter);
 
 			ListView recipesList = (ListView)findViewById(R.id.RecipeList);
 			recipesList.setAdapter(compositeAdapter);
@@ -233,11 +246,23 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 		@Override
 		public void run() {
 			if (dialog != null) {
-				dialog.dismiss();
-				dialog = null;
+				try {
+					dialog.dismiss();
+				}
+				finally {
+					dialog = null;
+				}
 			}
 		}
 
+	};
+	
+	private Runnable showServerRequestDialog = new Runnable() {
+		@Override
+		public void run() {
+			if (dialog != null) { Log.e(Global.TAG, "Attempting to create a new dialog when one is already active."); }
+			dialog = ProgressDialog.show(RecipeBrowser.this, "Please wait...", "Retrieving data...", true);
+		}
 	};
 
 	private CharSequence[] getAvailableFieldsForDialog() {
@@ -332,11 +357,6 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 				// we should delete it.
 				this.relativeUri = filterDeletionCandidate.getDeletedUri();
 
-
-
-				if (this.dialog != null) { Log.e(Global.TAG, "Attempting to create a new dialog when one is already active."); }
-				this.dialog = ProgressDialog.show(RecipeBrowser.this, "Please wait...", "Retrieving data...", true);
-
 				Thread thread = new Thread(null, doRequest, "BackgroundRecipeFetch");
 				thread.start();
 
@@ -355,9 +375,6 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 		// we need to reload...
 		this.relativeUri = destUrl;
 
-		if (dialog != null) { Log.e(Global.TAG, "Attempting to create a new dialog when one is already active."); }
-		dialog = ProgressDialog.show(RecipeBrowser.this, "Please wait...", "Retrieving data...", true);
-
 		Thread thread = new Thread(null, doRequest, "BackgroundRecipeFetch");
 		thread.start();
 
@@ -367,5 +384,24 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 	public void databaseOpenedCallback() {
 		// update the status bar.
 		dbHelper.updateNotificationMessage(this);
+
+		// the background fetching requires the db for caching.
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		baseUrl = prefs.getString("recipesUrl", "");
+		authUser = prefs.getString("authUsername", "");
+		authPass = prefs.getString("authPassword", "");
+
+		if ((cachedBaseUrl != baseUrl) ||
+				(cachedAuthUser != authUser) ||
+				(cachedAuthPass != authPass)) {
+
+			cachedBaseUrl = baseUrl;
+			cachedAuthUser = authUser;
+			cachedAuthPass = authPass;
+
+			backgroundFetchThread = new Thread(null, doRequest, "BackgroundRecipeFetch");
+			backgroundFetchThread.start();
+		}
+
 	}
 }

@@ -3,13 +3,14 @@
     package="uk.me.plek.kitchenRecipes"
     android:versionCode="1"
     android:versionName="1.0">
-    <application android:icon="@drawable/appicon" android:label="@string/app_name"
-    	android:debuggable="true" android:name="RecipeBrowserApplication">
+    <application android:icon="@drawable/appicon" 
+    	android:label="@string/app_name"
+    	android:debuggable="true" 
+    	android:name="RecipeBrowserApplication">
         <activity android:name=".RecipeBrowser"
 
         	android:theme="@android:style/Theme.Light.NoTitleBar"
             android:label="@string/app_name"
-            android:taskAffinity="uk.me.plek.android.recipes.RecipeBrowsing"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,14 +30,12 @@
 
     	<activity android:name="ViewRecipe" 
     		android:theme="@android:style/Theme.Light.NoTitleBar"
-    		android:label="ViewRecipe"
-    		android:taskAffinity="uk.me.plek.android.recipes.ActiveRecipes">
+    		android:label="ViewRecipe">
     	</activity>
 
     	<activity android:name="ActiveRecipes" 
     		android:theme="@android:style/Theme.Light.NoTitleBar"
-    		android:label="ActiveRecipes"
-    		android:taskAffinity="uk.me.plek.android.recipes.ActiveRecipes">
+    		android:label="ActiveRecipes">
     		
     		<intent-filter>
     			<action android:name="android.intent.action.VIEW" />

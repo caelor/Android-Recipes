@@ -35,31 +35,10 @@ public class XMLRecipeDocument {
 		// empty.
 	}
 	
-	public XMLRecipeDocument(InputStream is) {
-		parseNewDocument(is);
-	}
-	
 	public XMLRecipeDocument(String src) {
 		parseNewDocument(src);
 	}
 
-	public void parseNewDocument(InputStream is) {
-		BufferedReader r = new BufferedReader(new InputStreamReader(is));
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		try {
-			while ((line = r.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			is.close();
-		} catch (IOException e) {
-			// ignore it - the document will be marked invalid.
-		}
-		
-		parseNewDocument(sb.toString());
-
-	}
-	
 	public void parseNewDocument(String src) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
@@ -206,4 +185,21 @@ public class XMLRecipeDocument {
 	public ArrayList<AvailableField> getAvailableFields() { return this.availableFields; }
 
 	public String getRawXML() { return this.xmlSource; }
+	
+	public static String inputStreamToString(InputStream is) {
+		BufferedReader r = new BufferedReader(new InputStreamReader(is));
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		try {
+			while ((line = r.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+			is.close();
+		} catch (IOException e) {
+			// ignore it - the document will be marked invalid.
+		}
+		
+		return (sb.toString());
+
+	}
 }

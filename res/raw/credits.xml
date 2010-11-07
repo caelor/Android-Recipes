@@ -89,6 +89,18 @@
 					<li>Basic functionality completed.</li>
 				</ul></span>
 			</div>
+
+			<div class="version">
+				<span class="major">0</span>
+				<span class="minor">2b</span>
+				<span class="type">dev</span>
+				<span class="comment">Limited Development Release</span>
+				<span class="changes"><ul>
+					<li>Implemented caching of server requests.</li>
+					<li>Several bug fixes on use of Dialogs.</li>
+					<li>Removed multiple tasks, for a cleaner recently used apps list.</li>
+				</ul></span>
+			</div>
 			
 		</div>
 	</body>

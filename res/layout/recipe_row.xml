@@ -35,7 +35,8 @@
   		android:layout_height="wrap_content"
   		android:layout_below="@id/RecipeTitle"
   		android:isIndicator="true"
-  		style="?android:attr/ratingBarStyleSmall"></RatingBar>
+  		style="?android:attr/ratingBarStyleSmall"
+  		></RatingBar>
   		
   	<TextView android:id="@+id/RecipePrepTime"
   		android:layout_width="wrap_content"

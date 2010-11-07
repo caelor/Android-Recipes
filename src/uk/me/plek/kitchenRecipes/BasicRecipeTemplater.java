@@ -15,7 +15,7 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 			return portraitLayout(recipe);
 		}
 	}
-	
+
 	private String landscapeLayout(FullRecipe recipe) {
 		// head
 		String head = xhtmlTitle("Recipe - " + recipe.title);
@@ -24,19 +24,23 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		// body
 		String body =
 			xhtmlHeading(1, recipe.title);
-		
+
 		// details
-		String details = xhtmlHeading(2, "Details") +
+		String details = xhtmlHeading(2, "Details");
+
+		if (recipe.imageUrl != null) {
+			details = details +
 			xhtmlSpan(
 					xhtmlImage(recipe.imageUrl, "recipeImage", null),
 					"recipeImageWrapper",
 					null
-					);
-		
+			);
+		}
+
 		if (recipe.cuisine != null) {
 			details = details + 
-				xhtmlHeading(3, "cuisine") +
-				xhtmlSpan(recipe.cuisine, null, "sub3content");
+			xhtmlHeading(3, "cuisine") +
+			xhtmlSpan(recipe.cuisine, null, "sub3content");
 		}
 
 		String foo = null;
@@ -55,44 +59,44 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		}
 		if (foo != null) {
 			details = details + 
-				xhtmlHeading(3, "source") +
-				xhtmlSpan(
-						foo,  
-						null, 
-						"sub3content");
+			xhtmlHeading(3, "source") +
+			xhtmlSpan(
+					foo,  
+					null, 
+					"sub3content");
 		}
 
 		if (recipe.rating != null) {
 			details = details + 
-				xhtmlHeading(3, "rating") +
-				xhtmlSpan(recipe.rating, null, "sub3content");
+			xhtmlHeading(3, "rating") +
+			xhtmlSpan(recipe.rating, null, "sub3content");
 		}
 
 		if (recipe.friendlyPrepTime != null) {
 			details = details + 
-				xhtmlHeading(3, "preptime") +
-				xhtmlSpan(recipe.friendlyPrepTime, null, "sub3content");
+			xhtmlHeading(3, "preptime") +
+			xhtmlSpan(recipe.friendlyPrepTime, null, "sub3content");
 		}
 
 		if (recipe.friendlyCookTime != null) {
 			details = details + 
-				xhtmlHeading(3, "cooktime") +
-				xhtmlSpan(recipe.friendlyCookTime, null, "sub3content");
+			xhtmlHeading(3, "cooktime") +
+			xhtmlSpan(recipe.friendlyCookTime, null, "sub3content");
 		}
 
 		if (recipe.friendlyYield != null) {
 			details = details + 
-				xhtmlHeading(3, "yield") +
-				xhtmlSpan(recipe.friendlyYield, null, "sub3content");
+			xhtmlHeading(3, "yield") +
+			xhtmlSpan(recipe.friendlyYield, null, "sub3content");
 		}
 
-		
+
 		if (recipe.description != null) {
 			details = details + 
-				xhtmlHeading(3, "description") +
-				xhtmlSpan(recipe.description, null, "sub3content");
+			xhtmlHeading(3, "description") +
+			xhtmlSpan(recipe.description, null, "sub3content");
 		}
-		
+
 		// ingredients
 		String ingredients = xhtmlHeading(2, "Ingredients");
 		Iterator<IngredientGroup> igs = recipe.ingredientGroups.iterator();
@@ -101,36 +105,36 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 			if (ig.groupName.length() > 0) {
 				ingredients = ingredients + xhtmlHeading(3, ig.groupName);
 			}
-			
+
 			ingredients = ingredients + "<ul>";
-			
+
 			Iterator<String> is = ig.ingredients.iterator();
 			while (is.hasNext()) {
 				String i = is.next();
-				
+
 				i = performRegexes(i);
-				
+
 				ingredients = ingredients + "<li>" + i + "</li>";
 			}
-			
+
 			ingredients = ingredients + "</ul>";
 		}
 
 		// instructions
 		String instructions = xhtmlHeading(2, "Instructions") +
-			formatInstructions(recipe.instructions);
-		
-		
+		formatInstructions(recipe.instructions);
+
+
 		// put it together
 		body = body +
-			xhtmlSpan(details, "recipeDetails", "block") +
-			xhtmlSpan(ingredients, "recipeIngredients", "block") +
-			xhtmlSpan(instructions, "recipeInstructions", "block");
-		
+		xhtmlSpan(details, "recipeDetails", "block") +
+		xhtmlSpan(ingredients, "recipeIngredients", "block") +
+		xhtmlSpan(instructions, "recipeInstructions", "block");
+
 		return xhtmlDocument(head,body);
-		
+
 	}
-	
+
 	private String portraitLayout(FullRecipe recipe) {
 		// head
 		String head = xhtmlTitle("Recipe - " + recipe.title);
@@ -139,19 +143,19 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		// body
 		String body =
 			xhtmlHeading(1, recipe.title);
-		
+
 		// details
 		String details = xhtmlHeading(2, "Details") +
-			xhtmlSpan(
-					xhtmlImage(recipe.imageUrl, "recipeImage", null),
-					"recipeImageWrapper",
-					null
-					);
-		
+		xhtmlSpan(
+				xhtmlImage(recipe.imageUrl, "recipeImage", null),
+				"recipeImageWrapper",
+				null
+		);
+
 		if (recipe.cuisine != null) {
 			details = details + 
-				xhtmlHeading(3, "cuisine") +
-				xhtmlSpan(recipe.cuisine, null, "sub3content");
+			xhtmlHeading(3, "cuisine") +
+			xhtmlSpan(recipe.cuisine, null, "sub3content");
 		}
 
 		String foo = null;
@@ -170,44 +174,44 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		}
 		if (foo != null) {
 			details = details + 
-				xhtmlHeading(3, "source") +
-				xhtmlSpan(
-						foo,  
-						null, 
-						"sub3content");
+			xhtmlHeading(3, "source") +
+			xhtmlSpan(
+					foo,  
+					null, 
+					"sub3content");
 		}
 
 		if (recipe.rating != null) {
 			details = details + 
-				xhtmlHeading(3, "rating") +
-				xhtmlSpan(recipe.rating, null, "sub3content");
+			xhtmlHeading(3, "rating") +
+			xhtmlSpan(recipe.rating, null, "sub3content");
 		}
 
 		if (recipe.friendlyPrepTime != null) {
 			details = details + 
-				xhtmlHeading(3, "preptime") +
-				xhtmlSpan(recipe.friendlyPrepTime, null, "sub3content");
+			xhtmlHeading(3, "preptime") +
+			xhtmlSpan(recipe.friendlyPrepTime, null, "sub3content");
 		}
 
 		if (recipe.friendlyCookTime != null) {
 			details = details + 
-				xhtmlHeading(3, "cooktime") +
-				xhtmlSpan(recipe.friendlyCookTime, null, "sub3content");
+			xhtmlHeading(3, "cooktime") +
+			xhtmlSpan(recipe.friendlyCookTime, null, "sub3content");
 		}
 
 		if (recipe.friendlyYield != null) {
 			details = details + 
-				xhtmlHeading(3, "yield") +
-				xhtmlSpan(recipe.friendlyYield, null, "sub3content");
+			xhtmlHeading(3, "yield") +
+			xhtmlSpan(recipe.friendlyYield, null, "sub3content");
 		}
 
-		
+
 		if (recipe.description != null) {
 			details = details + 
-				xhtmlHeading(3, "description") +
-				xhtmlSpan(recipe.description, null, "sub3content");
+			xhtmlHeading(3, "description") +
+			xhtmlSpan(recipe.description, null, "sub3content");
 		}
-		
+
 		// ingredients
 		String ingredients = xhtmlHeading(2, "Ingredients");
 		Iterator<IngredientGroup> igs = recipe.ingredientGroups.iterator();
@@ -216,50 +220,50 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 			if (ig.groupName.length() > 0) {
 				ingredients = ingredients + xhtmlHeading(3, ig.groupName);
 			}
-			
+
 			ingredients = ingredients + "<ul>";
-			
+
 			Iterator<String> is = ig.ingredients.iterator();
 			while (is.hasNext()) {
 				String i = is.next();
-				
+
 				i = performRegexes(i);
-				
+
 				ingredients = ingredients + "<li>" + i + "</li>";
 			}
-			
+
 			ingredients = ingredients + "</ul>";
 		}
 
 		// instructions
 		String instructions = xhtmlHeading(2, "Instructions") +
-			formatInstructions(recipe.instructions);
-		
-		
+		formatInstructions(recipe.instructions);
+
+
 		// put it together
 		body = body +
-			xhtmlSpan(details, "recipeDetails", "block") +
-			xhtmlSpan(ingredients, "recipeIngredients", "block") +
-			xhtmlSpan(instructions, "recipeInstructions", "block");
-		
+		xhtmlSpan(details, "recipeDetails", "block") +
+		xhtmlSpan(ingredients, "recipeIngredients", "block") +
+		xhtmlSpan(instructions, "recipeInstructions", "block");
+
 		return xhtmlDocument(head,body);
 	}
-	
-	
+
+
 	private String formatInstructions(String instructions) {
 		String retval = "<ol>";
 		// break into a set of string on newlines...
 		String[] steps = instructions.split("\n");
-		
+
 		for (int foo = 0; foo < steps.length; foo++) {
 			String step = steps[foo];
-			
+
 			String noWhitespace = step.replaceAll("\\s", "");
 			if (noWhitespace.length() > 0) {
 				// perform any regexes on the step.
 
 				step = performRegexes(step);
-				
+
 				// add it
 				retval = retval + "<li>";
 				retval = retval + step;
@@ -271,7 +275,7 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		return retval;
 	}
 
-	
+
 	/**
 	 * Performs regexes and transforms on the string to make it more user friendly.
 	 * 
@@ -280,11 +284,11 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 	 */
 	private String performRegexes(String base) {
 		String i = base;
-		
+
 		// convert 0.5 to 1/2...
 		i = i.replaceAll("0\\.5", "&#189;");
 		i = i.replaceAll("1/2", "&#189;");
-		
+
 		// convert 1/4
 		i = i.replaceAll("0\\.25", "&#188;");
 		i = i.replaceAll("1/4", "&#188;");
@@ -293,7 +297,7 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		i = i.replaceAll("0\\.75", "&#190;");
 		i = i.replaceAll("3/4", "&#190;");
 
-		
+
 		// convert \d+.5 to \d 1/2...
 		String regex = "(\\d+)\\.5";
 		Matcher m = Pattern.compile(regex).matcher(i);
@@ -309,10 +313,10 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		m = Pattern.compile(regex).matcher(i);
 		if (m.find()) { i = i.replaceAll(regex, m.group(1) + "&#190;"); }
 
-		
+
 		return i;
 	}
-	
+
 	private String getLinkHost(String link) {
 		Matcher m = Pattern.compile("http://(\\S+?)\\/").matcher(link);
 		if (m.find()) {

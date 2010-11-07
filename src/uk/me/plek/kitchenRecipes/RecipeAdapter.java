@@ -7,9 +7,7 @@ import uk.me.plek.kitchenRecipes.ImageDownloadManager.QueueEntry;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,11 +57,7 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 				preview.setImageLevel((int)(Math.random() * 100) + 1);
 				
 				if (r.imageUrl != null) {
-			    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(_context.getBaseContext());
-			    	String baseUrl = prefs.getString("recipesUrl", "");
-			    	String totalUrl = baseUrl + r.thumbUrl;
-			    	
-			    	ImageDownloadManager.QueueEntry qe = new ImageDownloadManager.QueueEntry(v, preview, totalUrl, this);
+			    	ImageDownloadManager.QueueEntry qe = new ImageDownloadManager.QueueEntry(v, preview, r.thumbUrl, this);
 			    	downloadManager.queueItem(qe);
 
 					//BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -117,40 +111,6 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 		}
 		return v;
 	}
-	
-	/*private Bitmap LoadImage(String URL, BitmapFactory.Options options) {
-		Bitmap bitmap = null;
-		InputStream in = null;
-		try {
-			in = OpenHttpConnection(URL);
-			bitmap = BitmapFactory.decodeStream(in, null, options);
-			in.close();
-		}
-		catch (IOException e1) {
-		}
-		
-		return bitmap;
-	}
-	
-	private InputStream OpenHttpConnection(String strURL) throws IOException {
-		InputStream inputStream = null;
-		URL url = new URL(strURL);
-		URLConnection conn = url.openConnection();
-		
-		try {
-			HttpURLConnection httpConn = (HttpURLConnection)conn;
-			httpConn.setRequestMethod("GET");
-			httpConn.connect();
-			
-			if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				inputStream = httpConn.getInputStream();
-			}
-		}
-		catch (Exception ex) {		
-		}
-		
-		return inputStream;
-	}*/
 	
 	@Override
 	public BasicRecipe getItem(int position) {
