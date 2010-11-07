@@ -239,8 +239,8 @@ public class DatabaseHelper {
 			nm.notify(1, statusBarNotification);
 		}
 		else {
+			nm.cancel(1);
 			if (statusBarNotification != null) {
-				nm.cancel(1);
 				statusBarNotification = null;
 			}
 		}

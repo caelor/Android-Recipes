@@ -1,0 +1,97 @@
+
+@font-face {
+	font-family: Timeless;
+	src: url('Timeless.ttf');
+}
+@font-face {
+	font-family: WritingStuff;
+	src: url('Writing_Stuff.ttf');
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #eeeeee;
+	font-size: 0.8em;
+	line-height: 1.4em;
+	font-family: Timeless;
+}
+
+h1 {
+	position: relative;
+	top: -0.5em;
+	font-size: 1.5em;
+	text-align: center;
+	margin-top: 1.5em;
+	font-family: WritingStuff;
+}
+
+h2 {
+	border-bottom: 1px solid #cccccc;
+	top: -0.5em;
+	font-size: 0.9em;
+	text-align: right;
+	clear: both;
+	margin-top: 1em;
+	padding-right: 1em;	
+	font-family: WritingStuff;
+}
+
+h3 {
+	clear: left;
+	float: left;
+	font-size: 1.2em;
+	font-family: sans-serif;
+	color: #666;
+	font-weight: 100;
+	width: 4em;
+	padding: 0.5em;
+	margin: 0;
+	line-height: 0.8em;  /* center the title with the text to its right */
+	margin-top: 0.0em;
+	margin-bottom: 0.0em;
+	font-family: WritingStuff;
+}
+.sub3content {
+	float: left;
+	padding: 0.5em;
+	margin-top: 0.0em;
+	margin-bottom: 0.0em;
+}
+
+#recipeImage {
+	width: 15em;
+}
+
+#recipeImageWrapper {
+	padding: 10px;
+	border-top: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	border-bottom: 2px solid #666;
+	border-right: 2px solid #666;
+	background-color: #fff;
+	-webkit-transform:rotate(3deg);
+	margin: 1em;
+	opacity: 0.15;
+	position: absolute;
+	top: 3em;
+	right: 0.5em;
+}
+
+.block {
+	clear: both:
+}
+
+#recipeIngredients {
+	padding: 1em;
+}
+
+#recipeInstructions {
+}
+
+li {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	margin-left: 0.25em;
+	margin-right: 1em;
+}

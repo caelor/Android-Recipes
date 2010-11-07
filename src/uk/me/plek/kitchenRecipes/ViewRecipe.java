@@ -8,11 +8,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 	private String currentRecipeHTML;
 	private long fetchRowId;
 	private String recipeTemplate;
+	private boolean isLandscape;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -33,6 +37,8 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 		openingDbDialog = ProgressDialog.show(this, "Please wait...", "Loading data", true);
 		dbConn = new DatabaseHelper(this, this);
 
+		// find out if we're portrait or landscape
+		isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 	}
 
 	@Override
@@ -81,7 +87,7 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 		// called by databasehelper when the database has been opened.
 
 		dbConn.updateNotificationMessage(this);
-		
+
 		// we've now got an active DB connection, and have set up the listview.
 		// we need to see what intent we were called by, and then possibly load and run
 		// a recipe.
@@ -119,7 +125,7 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 							FullRecipe recipe = (FullRecipe)foo;
 
 							RecipeTemplater templater = RecipeTemplater.templateBuilder(recipeTemplate);
-							currentRecipeHTML = templater.generateStyledRecipe(recipe);
+							currentRecipeHTML = templater.generateStyledRecipe(recipe, isLandscape);
 							runOnUiThread(doShowRecipe);
 						}
 						else {
@@ -177,8 +183,12 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 			//	loadingRecipeDialog = null;
 			//}
 			if (openingDbDialog != null) {
-				openingDbDialog.dismiss();
-				openingDbDialog = null;
+				try {
+					openingDbDialog.dismiss();
+				}
+				finally {
+					openingDbDialog = null;
+				}
 			}
 		}
 	};
@@ -192,7 +202,12 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 			String mimetype = "text/html";
 			String encoding = "UTF-8";
 
-			webview.loadData(currentRecipeHTML, mimetype, encoding);
+			webview.loadDataWithBaseURL(
+					"file:///android_asset/templates/" + recipeTemplate + "/",
+					currentRecipeHTML, 
+					mimetype, 
+					encoding,
+					null);
 		}
 	};
 
