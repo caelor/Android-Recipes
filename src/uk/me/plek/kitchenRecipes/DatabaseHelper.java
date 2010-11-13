@@ -347,13 +347,15 @@ public class DatabaseHelper {
 				new String[] { "timestamp" }, 
 				"RequestUri=?", new String[] { requestUri }, null, null, null, "1");
 
-		String retval = null;
+		CharSequence retval = null;
 
 		if (curs.getCount() > 0) {
 			curs.moveToFirst();
 			long timestamp = curs.getLong(0);
-			return DatabaseHelper.decodeCachedDate(context, timestamp);
+			retval = DatabaseHelper.decodeCachedDate(context, timestamp);
 		}
+		
+		curs.close();
 
 		return retval;
 
