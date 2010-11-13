@@ -36,8 +36,16 @@ public class FullRecipe extends BasicRecipe {
 				
 				if (tagName.equals("instructions")) {
 					NodeList bar = e.getChildNodes();
-					if (bar.getLength() > 0) {
-						instructions = bar.item(0).getNodeValue();
+					instructions = "";
+					for (int subitem = 0; subitem < bar.getLength(); subitem++) {
+						Node item = bar.item(subitem);
+						if (item.getNodeType() == Node.TEXT_NODE) {
+							instructions = instructions + bar.item(subitem).getNodeValue();
+						}
+						else if (item.getNodeType() == Node.ENTITY_REFERENCE_NODE) {
+							// html character codes...
+							instructions = instructions + "&" + item.getNodeName() + ";";
+						}
 					}
 				}
 
