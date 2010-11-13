@@ -94,7 +94,20 @@ public class FullRecipe extends BasicRecipe {
 								Node ingNode = ingredients.item(bar3);
 								if (ingNode.getNodeType() == Node.ELEMENT_NODE) {
 									Element ingElement = (Element)ingNode;
-									String ingredient = ingElement.getChildNodes().item(0).getNodeValue();
+									String ingredient = "";
+									
+									// read in any of the subelements
+									for (int subitem = 0; subitem < ingElement.getChildNodes().getLength(); subitem++) {
+										Node item = ingElement.getChildNodes().item(subitem);
+										if (item.getNodeType() == Node.TEXT_NODE) {
+											ingredient = ingredient + bar.item(subitem).getNodeValue();
+										}
+										else if (item.getNodeType() == Node.ENTITY_REFERENCE_NODE) {
+											// html character codes...
+											ingredient = ingredient + "&" + item.getNodeName() + ";";
+										}
+									}
+									
 									ingGroup.addIngredient(ingredient);
 								}
 								else {
