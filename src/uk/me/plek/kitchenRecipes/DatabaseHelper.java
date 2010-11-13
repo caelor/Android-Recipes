@@ -96,7 +96,7 @@ public class DatabaseHelper {
 				sql = sql + " timestamp TIMESTAMP ";
 				sql = sql + ")";
 				db.execSQL(sql);
-				
+
 				db.setTransactionSuccessful();
 				db.endTransaction();
 
@@ -152,70 +152,86 @@ public class DatabaseHelper {
 		}, null, null, null, null, "StartTime");
 		return retval;
 	}
-	
+
 	public int getNumberOfActiveRecipes() {
-		Cursor c = this.db.query("activerecipes", new String[] { 
-				"COUNT(1)"
-		}, null, null, null, null, null);
-		if (c.moveToFirst()) {
-			int retval = c.getInt(0);
-			c.close();
-			return retval;
+		if (db != null) {
+			Cursor c = this.db.query("activerecipes", new String[] { 
+					"COUNT(1)"
+			}, null, null, null, null, null);
+			if (c.moveToFirst()) {
+				int retval = c.getInt(0);
+				c.close();
+				return retval;
+			}
+			else {
+				c.close();
+				return -1;
+			}
 		}
 		else {
-			c.close();
 			return -1;
 		}
 	}
 
 	public boolean isRecipeActive(String recipeDataString) {
-		Cursor curs = this.db.query("activerecipes", new String[] { "Title", "SourceURI" }, "SourceURI = ?", new String[] { recipeDataString }, null, null, null);
-		if (curs.getCount() > 0) {
-			curs.close();
-			return true;
+		if (db != null) {
+			Cursor curs = this.db.query("activerecipes", new String[] { "Title", "SourceURI" }, "SourceURI = ?", new String[] { recipeDataString }, null, null, null);
+			if (curs.getCount() > 0) {
+				curs.close();
+				return true;
+			}
+			else {
+				curs.close();
+				return false;
+			}
 		}
 		else {
-			curs.close();
 			return false;
 		}
 	}
 
 	public void addActiveRecipe(String uid, String title, String xml, String sourceUri, Blob image) {
-		ContentValues cv = new ContentValues();
-		cv.put("uniqueId", uid);
-		cv.put("Title", title);
-		cv.put("RecipeXML", xml);
-		cv.put("SourceURI", sourceUri);
+		if (db != null) {
+			ContentValues cv = new ContentValues();
+			cv.put("uniqueId", uid);
+			cv.put("Title", title);
+			cv.put("RecipeXML", xml);
+			cv.put("SourceURI", sourceUri);
 
-		Date now = new Date();
-		cv.put("StartTime", now.getTime());
+			Date now = new Date();
+			cv.put("StartTime", now.getTime());
 
-		/*long rowId = */db.insert("activerecipes", "Title", cv);
+			/*long rowId = */db.insert("activerecipes", "Title", cv);
+		}
 	}
 
 	public String getXMLForRecipeBySourceUri(String sourceUri) {
-		Cursor curs = this.db.query("activerecipes", new String[] { "RecipeXML" }, "SourceURI=?", new String[] { sourceUri }, null, null, null);
-
 		String retval = null;
 
-		if (curs.getCount() > 0) {
-			curs.moveToFirst();
-			retval = curs.getString(0);
+		if (db != null) {
+			Cursor curs = this.db.query("activerecipes", new String[] { "RecipeXML" }, "SourceURI=?", new String[] { sourceUri }, null, null, null);
+
+			if (curs.getCount() > 0) {
+				curs.moveToFirst();
+				retval = curs.getString(0);
+			}
+
+			curs.close();
 		}
-		
-		curs.close();
 
 		return retval;
 	}
 
 	public String getSourceUriByRowId(long rowId) {
-		Cursor curs = this.db.query("activerecipes", new String[] { "SourceURI" }, android.provider.BaseColumns._ID + "=?", new String[] { String.valueOf(rowId) }, null, null, null);
-
 		String retval = null;
 
-		if (curs.getCount() > 0) {
-			curs.moveToFirst();
-			retval = curs.getString(0);
+		if (db != null) {
+			Cursor curs = this.db.query("activerecipes", new String[] { "SourceURI" }, android.provider.BaseColumns._ID + "=?", new String[] { String.valueOf(rowId) }, null, null, null);
+
+			if (curs.getCount() > 0) {
+				curs.moveToFirst();
+				retval = curs.getString(0);
+			}
 		}
 
 		return retval;
@@ -279,105 +295,113 @@ public class DatabaseHelper {
 			}
 		}
 	}
-	
+
 	public void deleteRecipeByUri(String uri) {
 		if (db != null) {
 			db.delete("activerecipes", "SourceURI=?", new String[] { uri });
 		}
 	}
-	
+
 	public static CharSequence decodeStartDate(Context context, long millis) {
 		CharSequence retval = "Start Time Unknown";
-		
+
 		int flags = 0;
 		flags |= DateUtils.FORMAT_SHOW_TIME;
 		//flags |= DateUtils.FORMAT_SHOW_WEEKDAY;
 		//flags |= DateUtils.FORMAT_SHOW_DATE;
 		flags |= DateUtils.FORMAT_ABBREV_RELATIVE;
-		
+
 		retval = "Recipe started " + DateUtils.getRelativeDateTimeString(
 				context, 
 				millis, 
 				DateUtils.SECOND_IN_MILLIS, 
 				DateUtils.WEEK_IN_MILLIS, 
 				flags);
-	
+
 		return retval;
 	}
-	
+
 	public static CharSequence decodeCachedDate(Context context, long millis) {
 		CharSequence retval = "Start Time Unknown";
-		
+
 		int flags = 0;
 		flags |= DateUtils.FORMAT_SHOW_TIME;
 		//flags |= DateUtils.FORMAT_SHOW_WEEKDAY;
 		//flags |= DateUtils.FORMAT_SHOW_DATE;
 		flags |= DateUtils.FORMAT_ABBREV_RELATIVE;
-		
+
 		retval = " [cached " + DateUtils.getRelativeDateTimeString(
 				context, 
 				millis, 
 				DateUtils.SECOND_IN_MILLIS, 
 				DateUtils.WEEK_IN_MILLIS, 
 				flags) + "]";
-	
+
 		return retval;
 	}
-	
-	public String getCachedServerResponse(String requestUri) {
-		Cursor curs = this.db.query("requestCache", 
-				new String[] { "responseXML" }, 
-				"RequestUri=?", new String[] { requestUri }, null, null, null, "1");
 
+	public String getCachedServerResponse(String requestUri) {
 		String retval = null;
 
-		if (curs.getCount() > 0) {
-			curs.moveToFirst();
-			retval = curs.getString(0);
+		if (db != null) {
+			Cursor curs = this.db.query("requestCache", 
+					new String[] { "responseXML" }, 
+					"RequestUri=?", new String[] { requestUri }, null, null, null, "1");
+
+			if (curs.getCount() > 0) {
+				curs.moveToFirst();
+				retval = curs.getString(0);
+			}
+
+			curs.close();
 		}
-		
-		curs.close();
 
 		return retval;
 
 	}
 
 	public CharSequence getCachedServerResponseTimestamp(Context context, String requestUri) {
-		Cursor curs = this.db.query("requestCache", 
-				new String[] { "timestamp" }, 
-				"RequestUri=?", new String[] { requestUri }, null, null, null, "1");
-
 		CharSequence retval = null;
 
-		if (curs.getCount() > 0) {
-			curs.moveToFirst();
-			long timestamp = curs.getLong(0);
-			retval = DatabaseHelper.decodeCachedDate(context, timestamp);
+		if (db != null) {
+			Cursor curs = this.db.query("requestCache", 
+					new String[] { "timestamp" }, 
+					"RequestUri=?", new String[] { requestUri }, null, null, null, "1");
+
+			if (curs.getCount() > 0) {
+				curs.moveToFirst();
+				long timestamp = curs.getLong(0);
+				retval = DatabaseHelper.decodeCachedDate(context, timestamp);
+			}
+
+			curs.close();
 		}
-		
-		curs.close();
 
 		return retval;
 
 	}
 
 	public void deletedOldServerResponses(long maxAge) {
-		Date nowDate = new Date();
-		long nowLong = nowDate.getTime();
-		long limit = nowLong - maxAge;
-		
-		this.db.delete("requestCache", "timestamp < ?", new String[] { String.valueOf(limit) });
+		if (db != null) {
+			Date nowDate = new Date();
+			long nowLong = nowDate.getTime();
+			long limit = nowLong - maxAge;
+
+			this.db.delete("requestCache", "timestamp < ?", new String[] { String.valueOf(limit) });
+		}
 	}
-	
+
 	public void addServerResponse(String requestUri, String responseXML) {
-		Date nowDate = new Date();
-		long nowLong = nowDate.getTime();
-		
-		ContentValues cv = new ContentValues();
-		cv.put("requestUri", requestUri);
-		cv.put("responseXML", responseXML);
-		cv.put("timestamp", nowLong);
-		
-		this.db.insert("requestCache", "timestamp", cv);
+		if (db != null) {
+			Date nowDate = new Date();
+			long nowLong = nowDate.getTime();
+
+			ContentValues cv = new ContentValues();
+			cv.put("requestUri", requestUri);
+			cv.put("responseXML", responseXML);
+			cv.put("timestamp", nowLong);
+
+			this.db.insert("requestCache", "timestamp", cv);
+		}
 	}
 }
