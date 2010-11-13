@@ -5,6 +5,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BasicRecipeTemplater extends RecipeTemplater {
+	static final String CONST_NO_INSTRUCTIONS = "<p>This recipe has no instructions.</p>";
+	static final String CONST_NO_INGREDIENTS = "<p>This recipe has no ingredients.</p>";
 
 	@Override
 	public String generateStyledRecipe(FullRecipe recipe, boolean landscape) {
@@ -63,7 +65,7 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 			xhtmlSpan(
 					foo,  
 					null, 
-					"sub3content");
+			"sub3content");
 		}
 
 		if (recipe.rating != null) {
@@ -99,30 +101,40 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 
 		// ingredients
 		String ingredients = xhtmlHeading(2, "Ingredients");
-		Iterator<IngredientGroup> igs = recipe.ingredientGroups.iterator();
-		while (igs.hasNext()) {
-			IngredientGroup ig = igs.next();
-			if (ig.groupName.length() > 0) {
-				ingredients = ingredients + xhtmlHeading(3, ig.groupName);
+		if (recipe.ingredientGroups != null) {
+			Iterator<IngredientGroup> igs = recipe.ingredientGroups.iterator();
+			while (igs.hasNext()) {
+				IngredientGroup ig = igs.next();
+				if (ig.groupName.length() > 0) {
+					ingredients = ingredients + xhtmlHeading(3, ig.groupName);
+				}
+
+				ingredients = ingredients + "<ul>";
+
+				Iterator<String> is = ig.ingredients.iterator();
+				while (is.hasNext()) {
+					String i = is.next();
+
+					i = performRegexes(i);
+
+					ingredients = ingredients + "<li>" + i + "</li>";
+				}
+
+				ingredients = ingredients + "</ul>";
 			}
-
-			ingredients = ingredients + "<ul>";
-
-			Iterator<String> is = ig.ingredients.iterator();
-			while (is.hasNext()) {
-				String i = is.next();
-
-				i = performRegexes(i);
-
-				ingredients = ingredients + "<li>" + i + "</li>";
-			}
-
-			ingredients = ingredients + "</ul>";
+		}
+		else {
+			ingredients = ingredients + BasicRecipeTemplater.CONST_NO_INGREDIENTS;
 		}
 
 		// instructions
-		String instructions = xhtmlHeading(2, "Instructions") +
-		formatInstructions(recipe.instructions);
+		String instructions = xhtmlHeading(2, "Instructions");
+		if (recipe.instructions != null) {
+			instructions = instructions + formatInstructions(recipe.instructions);
+		}
+		else {
+			instructions = instructions + BasicRecipeTemplater.CONST_NO_INSTRUCTIONS;
+		}
 
 
 		// put it together
@@ -178,7 +190,7 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 			xhtmlSpan(
 					foo,  
 					null, 
-					"sub3content");
+			"sub3content");
 		}
 
 		if (recipe.rating != null) {
@@ -214,6 +226,7 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 
 		// ingredients
 		String ingredients = xhtmlHeading(2, "Ingredients");
+		if (recipe.ingredientGroups != null) {
 		Iterator<IngredientGroup> igs = recipe.ingredientGroups.iterator();
 		while (igs.hasNext()) {
 			IngredientGroup ig = igs.next();
@@ -234,10 +247,19 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 
 			ingredients = ingredients + "</ul>";
 		}
+		}
+		else {
+			ingredients = ingredients + BasicRecipeTemplater.CONST_NO_INGREDIENTS;
+		}
 
 		// instructions
-		String instructions = xhtmlHeading(2, "Instructions") +
-		formatInstructions(recipe.instructions);
+		String instructions = xhtmlHeading(2, "Instructions");
+		if (recipe.instructions != null) {
+			instructions = instructions + formatInstructions(recipe.instructions);
+		}
+		else {
+			instructions = instructions + BasicRecipeTemplater.CONST_NO_INSTRUCTIONS;
+		}
 
 
 		// put it together
