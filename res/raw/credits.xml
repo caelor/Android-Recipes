@@ -116,6 +116,15 @@
 				</ul></span>
 			</div>
 			
+			<div class="version">
+				<span class="major">0</span>
+				<span class="minor">3</span>
+				<span class="type">beta</span>
+				<span class="comment">Feature complete beta release</span>
+				<span class="changes"><ul>
+					<li>Implemented correct handling of referenced recipes.</li>
+				</ul></span>
+			</div>
 		</div>
 	</body>
 </html>
