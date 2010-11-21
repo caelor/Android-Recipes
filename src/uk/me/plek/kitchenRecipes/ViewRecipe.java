@@ -9,12 +9,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 public class ViewRecipe extends Activity implements DatabaseEventListener {
@@ -25,12 +27,27 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 	private long fetchRowId;
 	private String recipeTemplate;
 	private boolean isLandscape;
+	private LoadRecipeWebViewClient webViewClient;
+
+	private class LoadRecipeWebViewClient extends WebViewClient {
+		@Override
+		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			// fire off the intent...
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			i.setData(Uri.parse(url));
+			startActivity(i);
+			
+			return true;
+		}
+	}
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view_recipe);
+
+		webViewClient = new LoadRecipeWebViewClient();
 
 		openingDbDialog = ProgressDialog.show(this, "Please wait...", "Loading data", true);
 		dbConn = new DatabaseHelper(this, this);
@@ -196,6 +213,7 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 		@Override
 		public void run() {
 			WebView webview = (WebView)ViewRecipe.this.findViewById(R.id.recipeWebView);
+			webview.setWebViewClient(webViewClient);
 
 			String mimetype = "text/html";
 			String encoding = "UTF-8";

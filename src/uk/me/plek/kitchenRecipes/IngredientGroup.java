@@ -4,23 +4,28 @@ import java.util.HashSet;
 
 public class IngredientGroup {
 	protected final String groupName;
-	protected HashSet<String> ingredients;
+	protected HashSet<Ingredient> ingredients;
 
 	public IngredientGroup(String name) {
 		groupName = name;
-		ingredients = new HashSet<String>();
+		ingredients = new HashSet<Ingredient>();
 	}
 	
-	public void addIngredient(String ingredient) {
+	public void addIngredient(Ingredient ingredient) {
 		ingredients.add(ingredient);
 	}
-	
-	public boolean containsIngredient(String ingredient) {
+
+	public void addReferencedIngredient(String ingredient, String uri) {
+		ingredients.add(new Ingredient(ingredient, uri));
+	}
+
+	@Deprecated
+	public boolean containsIngredient(Ingredient ingredient) {
 		return ingredients.contains(ingredient);
 	}
 	
-	public String[] getIngredients() {
-		return (String[]) ingredients.toArray();
+	public Ingredient[] getIngredients() {
+		return (Ingredient[]) ingredients.toArray();
 	}
 	
 	public String getGroupName() {

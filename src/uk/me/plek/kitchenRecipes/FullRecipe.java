@@ -2,10 +2,13 @@ package uk.me.plek.kitchenRecipes;
 
 import java.util.HashSet;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.R.attr;
 import android.util.Log;
 
 public class FullRecipe extends BasicRecipe {
@@ -96,7 +99,14 @@ public class FullRecipe extends BasicRecipe {
 									Element ingElement = (Element)ingNode;
 								
 									String ingredient = ingElement.getChildNodes().item(0).getNodeValue();
-									ingGroup.addIngredient(ingredient);
+									String reference = ingElement.getAttribute("referencedRecipeAbsoluteUri");
+									// getAttribute always returns a string, even if it's empty
+									if (reference.length() > 0) { 
+										ingGroup.addIngredient(new Ingredient(ingredient, reference));
+									}
+									else {
+										ingGroup.addIngredient(new Ingredient(ingredient));
+									}
 								}
 								else {
 									Log.w(Global.TAG, "Unexpected non-element node in ingredient group.");

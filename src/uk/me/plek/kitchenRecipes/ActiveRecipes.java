@@ -208,7 +208,7 @@ public class ActiveRecipes extends Activity implements DatabaseEventListener, On
 		@Override
 		public void run() {
 			/* Server request for information */
-			String absoluteUrl = currentRecipeUri.replace("recipe://", "http://");
+			String absoluteUrl = Global.recipeToHttpConvert(currentRecipeUri);
 
 			// don't worry about going through the cache, because we already implicitly do that.
 			try {
