@@ -53,7 +53,7 @@ public class FilterAdapter extends ArrayAdapter<ActiveFilter> {
 				TextView desc = (TextView) v.findViewById(R.id.ActiveFilterDesc);
 				//TextView title = (TextView) v.findViewById(R.id.ActiveFilterTitle);
 				TextView title = null;
-				ImageView icon = (ImageView) v.findViewById(R.id.ActiveFilterIcon);
+				//ImageView icon = (ImageView) v.findViewById(R.id.ActiveFilterIcon);
 
 				if (desc != null) {
 					String fld = f.getField();
@@ -100,7 +100,7 @@ public class FilterAdapter extends ArrayAdapter<ActiveFilter> {
 					else if (fld.equals("recipe")) { title.setText("Specific Recipe"); }
 					else if (fld.equals("recipe")) { title.setText("Sort"); }
 				}
-				if (icon != null) {
+				/*if (icon != null) {
 					String fld = f.getField();
 					if (fld.equals("category")) { icon.setImageDrawable(v.getResources().getDrawable(R.drawable.icon_category)); }
 					else if (fld.equals("cuisine")) { icon.setImageDrawable(v.getResources().getDrawable(R.drawable.icon_cuisine)); }
@@ -119,7 +119,7 @@ public class FilterAdapter extends ArrayAdapter<ActiveFilter> {
 					else if (fld.equals("source")) { icon.setImageDrawable(v.getResources().getDrawable(R.drawable.icon_source)); }
 					else if (fld.equals("recipe")) { icon.setImageDrawable(v.getResources().getDrawable(R.drawable.icon_recipe)); }
 					else if (fld.equals("sort")) { icon.setImageDrawable(v.getResources().getDrawable(R.drawable.icon_sort)); }
-				}
+				}*/
 			}
 		}
 		return v;

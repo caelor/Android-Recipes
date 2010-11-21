@@ -126,7 +126,7 @@ public class ImageDownloadManager {
 		@Override
 		public void run() {
 			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-			bmOptions.inSampleSize = 1;
+			bmOptions.inSampleSize = 4;
 
 			QueueEntry e = downloadQueue.poll();
 			while (e != null) {

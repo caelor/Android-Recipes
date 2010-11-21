@@ -8,6 +8,8 @@ import uk.me.plek.kitchenRecipes.ImageDownloadManager.QueueEntry;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +55,8 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 			
 			if (preview != null) {
 				// initially, set a random pepper, while the image gets loaded in the background
-				preview.setImageDrawable(v.getResources().getDrawable(R.drawable.random_pepper));
+				// avoid a bug in android, and use the layout file to set the drawable
+				//preview.setImageDrawable(v.getResources().getDrawable(R.drawable.random_pepper));
 				preview.setImageLevel((int)(Math.random() * 100) + 1);
 				
 				if (r.imageUrl != null) {
@@ -127,6 +130,10 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 	public void downloadComplete(QueueEntry queueEntry, Bitmap imageBitmap) {
 		View v = queueEntry.getIdentifier();
 		ImageView preview = (ImageView) v.findViewById(R.id.RecipeIcon);
+		
+		// try and force some GC.
+		System.gc();
+		
 		preview.setImageBitmap(imageBitmap);
 	}
 

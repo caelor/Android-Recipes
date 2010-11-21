@@ -10,6 +10,7 @@
   		android:layout_height="70dip"
   		android:scaleType="fitCenter"
   		android:paddingLeft="5dip"
+  		android:src="@drawable/random_pepper"
   		android:layout_alignParentRight="true"></ImageView>
 
   	<TextView android:id="@+id/RecipeTitle"

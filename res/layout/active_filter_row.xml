@@ -5,21 +5,20 @@
  	android:layout_width="fill_parent"
   	android:layout_height="?android:attr/listPreferredItemHeight">
   		
-  	<ImageView android:id="@+id/RemoveFilterIcon"
+  	<!-- <ImageView android:id="@+id/RemoveFilterIcon"
   		android:layout_width="40dip"
   		android:layout_height="40dip"
   		android:scaleType="fitCenter"
   		android:paddingLeft="5dip"
   		android:src="@drawable/remove"
-  		android:layout_alignParentRight="true"></ImageView>
+  		android:layout_alignParentRight="true"></ImageView> -->
 
-  	<ImageView android:id="@+id/ActiveFilterIcon"
+  	<!-- <ImageView android:id="@+id/ActiveFilterIcon"
   		android:layout_width="35dip"
   		android:layout_height="35dip"
   		android:scaleType="fitCenter"
   		android:paddingLeft="5dip"
-  		android:src="@drawable/pepper14"
-  		android:layout_alignParentLeft="true"></ImageView>
+  		android:layout_alignParentLeft="true"></ImageView> -->
 
 
   	<!-- <TextView android:id="@+id/ActiveFilterTitle"
@@ -32,18 +31,18 @@
   		android:layout_toLeftOf="@id/RemoveFilterIcon"
   		android:maxLines="1"
   		android:marqueeRepeatLimit="marquee_forever"
-  		android:ellipsize="marquee"></TextView>-->
+  		android:ellipsize="marquee"></TextView> -->
 
   		
   	<TextView android:id="@+id/ActiveFilterDesc"
-  		android:layout_width="wrap_content"
+  		android:layout_width="fill_parent"
   		android:layout_height="wrap_content"
-  		android:layout_toLeftOf="@id/RemoveFilterIcon"
-  		android:layout_toRightOf="@id/ActiveFilterIcon"
-  		android:textSize="12dip"
+  		android:textSize="18dip"
   		android:singleLine="true"
   		android:scrollHorizontally="true"
   		android:gravity="center"
+  		android:paddingTop="8dip"
+  		android:paddingBottom="8dip"
 		android:ellipsize="marquee"></TextView>
 
   	<!-- <TextView android:id="@+id/ActiveFilterValue"
