@@ -126,7 +126,7 @@ public class ImageDownloadManager {
 		@Override
 		public void run() {
 			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-			bmOptions.inSampleSize = 4;
+			bmOptions.inSampleSize = 1;
 
 			QueueEntry e = downloadQueue.poll();
 			while (e != null) {
@@ -172,7 +172,10 @@ public class ImageDownloadManager {
 					// notify callback 
 					Log.w(Global.TAG, "IOException with url " + e.getUrl());
 					addToNotifyQueue(e, QueueEntry.QueueStatus.FAILED);
+				} catch (OutOfMemoryError oom) {
+					Log.w(Global.TAG, "Out of memory loading image from " + e.getUrl());
 				}
+
 
 				e = downloadQueue.poll(); // ask for the next item in the queue
 			}
