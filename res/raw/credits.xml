@@ -150,6 +150,16 @@
 					<li>Added the ability to share a recipe card (for people who don't have the app).</li>
 				</ul></span>
 			</div>
+
+			<div class="version">
+				<span class="major">0</span>
+				<span class="minor">4</span>
+				<span class="type">subrelease 1</span>
+				<span class="comment">Memory usage improvements</span>
+				<span class="changes"><ul>
+					<li>Removed unnecessary images to minimise application size and avoid VM Heap exhaustion.</li>
+				</ul></span>
+			</div>
 		</div>
 	</body>
 </html>

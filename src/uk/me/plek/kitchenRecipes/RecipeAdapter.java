@@ -57,24 +57,9 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 			RatingBar rating = (RatingBar) v.findViewById(R.id.RecipeRating);
 			
 			if (preview != null) {
-				// initially, set a random pepper, while the image gets loaded in the background
-				// avoid a bug in android, and use the layout file to set the drawable
-				//preview.setImageDrawable(v.getResources().getDrawable(R.drawable.random_pepper));
-				if (preferences.getBoolean("multiplePeppers", true)) {
-					preview.setImageLevel((int)(Math.random() * 100) + 1);
-				}
-				else {
-					preview.setImageLevel(90);
-				}
-				
 				if ((r.imageUrl != null) && (preferences.getBoolean("showThumbnails", true))) {
 			    	ImageDownloadManager.QueueEntry qe = new ImageDownloadManager.QueueEntry(v, preview, r.thumbUrl, this);
 			    	downloadManager.queueItem(qe);
-
-					//BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-					//bmOptions.inSampleSize = 1;
-					//Bitmap bm = LoadImage(baseUrl + r.imageUrl, bmOptions);
-					//preview.setImageBitmap(bm);
 				}
 			}
 			if (title != null) {
