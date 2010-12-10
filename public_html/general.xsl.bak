@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+ 
+  <xsl:template match="recipeDB">
+    <html><head>
+      <title>
+        <!-- Create a conditional here - if there is only a single returned recipe, then it becomes
+             the title. Otherwise, the title should be something else pretty. -->
+        <xsl:choose>
+          <xsl:when test="number(recipes@matched == 1)">
+            Recipes - <xsl:value-of select="recipes/recipe@title"/>
+          </xsl:when>
+          <xsl:otherwise>
+            Recipes - Search
+          </xsl:otherwise>
+        </xsl:choose>
+      </title>
+ 
+      <!-- insert CSS reference here -->
+    </head>
+ 
+    <body>
+      <!-- display the list of existing filters -->
+      <xsl:choose>
+        <xsl:when test="count(filter/filterItem)=0">
+          <h3 class="inactive">Applied Filters</h3>
+        </xsl:when>
+        <xsl:otherwise>
+          <h3 class="active">Applied Filters</h3>
+        </xsl:otherwise>
+      </xsl:choose>
+ 
+      <table>
+        <th><td>Field</td><td>Value</td><td/></th>
+        <xsl:apply-templates select="filter/filterItem"/>
+      </table>
+ 
+ 
+      <!-- display of recipes -->
+      <!-- just display a list if there is more than 1, or a formatted recipe if there is only 1 -->
+      <xsl:choose>
+        <xsl:when test="number(recipes@matched=1)">
+          <!-- there is no point being able to add more filters if there's only 1 matching recipe -->
+ 
+ 
+ 
+          <!-- display a formatted recipe -->
+          <div id="recipe">
+          </div>
+ 
+        </xsl:when><xsl:otherwise>
+ 
+          <!-- display of filter options - if the recipeDB@query is "fields", then this is a list of
+               fields, otherwise it specifies the options available for the chosen field (which will be
+               specified in recipeDB@query attrib -->
+          <xsl:choose>
+            <xsl:when test="@query='filter'">
+              <!-- List the available filter fields -->
+ 
+ 
+            </xsl:when><xsl:otherwise>
+              <!-- List the appropriate filter category -->
+ 
+ 
+            </xsl:otherwise>
+          </xsl:choose>
+ 
+ 
+          <!-- display a list of recipes -->
+          <div id="recipes">
+          </div>
+        </xsl:otherwise>
+      </xsl:choose>
+    </body></html>
+  </xsl:template>
+ 
+ 
+  <!-- Filter item, used above -->
+  <xsl:template match="filterItem">
+    <tr>
+      <td><xsl:value-of select="@field"/></td>
+      <td><xsl:value-of select="@value"/></td>
+      <td>
+        <a>
+          <xsl:attribute name="href">
+            <xsl:value-of select="@deletedAbsoluteUri"/>
+          </xsl:attribute>
+          Remove
+        </a>
+      </td>
+    </tr>
+  </xsl:template>
+ 
+</xsl:stylesheet>
