@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="long_tap_to_open_recipe_off">Short tap on a recipe in the browser to open it.</string>
+    <string name="long_tap_to_open_recipe_on">Long tap on a recipe in the browser to open it.</string>
+    <string name="long_tap_to_open_recipe">Long Tap to Open Recipe</string>
+    <string name="multiple_peppers_off">Only a single pepper will be used as a placeholder</string>
+    <string name="multiple_peppers_on">A full range of peppers will be used for placeholders</string>
+    <string name="multiple_peppers_summary">Show multiple peppers as placeholders</string>
+    <string name="multiple_peppers">Multiple Peppers for placeholders</string>
+    <string name="show_thumbnails_summary_off">Thumbnails will NOT be shown</string>
+    <string name="show_thumbnails_summary_on">Thumbnails will be shown</string>
+    <string name="show_thumbnails_summary">Should thumbnails be shown on the browse recipes screen.</string>
+    <string name="show_thumbnails">Show Thumbnails</string>
     <string name="menu_refresh_short">Refresh</string>
     <string name="menu_refresh">Refresh Recipes List</string>
     <string name="add_filter_title">Add Filter</string>

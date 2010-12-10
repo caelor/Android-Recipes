@@ -1,14 +1,12 @@
 package uk.me.plek.kitchenRecipes;
 
 import java.util.HashSet;
+import java.util.Vector;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import android.R.attr;
 import android.util.Log;
 
 public class FullRecipe extends BasicRecipe {
@@ -21,7 +19,7 @@ public class FullRecipe extends BasicRecipe {
 	protected String description;
 	protected String link;
 	protected HashSet<String> categories = new HashSet<String>();
-	protected HashSet<IngredientGroup> ingredientGroups = new HashSet<IngredientGroup>();
+	protected Vector<IngredientGroup> ingredientGroups = new Vector<IngredientGroup>();
 
 	public FullRecipe(Element recipeElement) {
 		super(recipeElement);

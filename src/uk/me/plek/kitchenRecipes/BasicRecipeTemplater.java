@@ -328,6 +328,14 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 	private String performRegexes(String base) {
 		String i = base;
 
+		// convert 0.33 to 1/3
+		i = i.replaceAll("0\\.33(3*)", "&#x2153;");
+		i = i.replaceAll("1/3", "&#x2153;");
+		
+		// convert 0.66 to 2/3
+		i = i.replaceAll("0\\.66(6*)", "&#x2154;");
+		i = i.replaceAll("2/3", "&#x2154;");
+		
 		// convert 0.5 to 1/2...
 		i = i.replaceAll("0\\.5", "&#189;");
 		i = i.replaceAll("1/2", "&#189;");
@@ -339,6 +347,22 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		// convert 3/4
 		i = i.replaceAll("0\\.75", "&#190;");
 		i = i.replaceAll("3/4", "&#190;");
+
+		// convert 0.2 -> 1/5
+		i = i.replaceAll("0\\.2", "&#x2155;");
+		i = i.replaceAll("1/5", "&#x2155;");
+
+		// convert 0.4 -> 2/5
+		i = i.replaceAll("0\\.4", "&#x2156;");
+		i = i.replaceAll("1/5", "&#x2156;");
+
+		// convert 0.6 -> 3/5
+		i = i.replaceAll("0\\.6", "&#x2157;");
+		i = i.replaceAll("1/5", "&#x2157;");
+
+		// convert 0.8 -> 4/5
+		i = i.replaceAll("0\\.8", "&#x2158;");
+		i = i.replaceAll("1/5", "&#x2158;");
 
 
 		// convert \d+.5 to \d 1/2...
@@ -356,7 +380,36 @@ public class BasicRecipeTemplater extends RecipeTemplater {
 		m = Pattern.compile(regex).matcher(i);
 		if (m.find()) { i = i.replaceAll(regex, m.group(1) + "&#190;"); }
 
+		// convert \d+.33 to \d 1/3...
+		regex = "(\\d+)\\.33(3*)";
+		m = Pattern.compile(regex).matcher(i);
+		if (m.find()) { i = i.replaceAll(regex, m.group(1) + "&#x2153;"); }
 
+		// convert \d+.66 to \d 2/3...
+		regex = "(\\d+)\\.66(6*)";
+		m = Pattern.compile(regex).matcher(i);
+		if (m.find()) { i = i.replaceAll(regex, m.group(1) + "&#x2154;"); }
+		
+		// convert \d+.2 to \d 1/5...
+		regex = "(\\d+)\\.2";
+		m = Pattern.compile(regex).matcher(i);
+		if (m.find()) { i = i.replaceAll(regex, m.group(1) + "&#x2155;"); }
+		
+		// convert \d+.4 to \d 2/5...
+		regex = "(\\d+)\\.4";
+		m = Pattern.compile(regex).matcher(i);
+		if (m.find()) { i = i.replaceAll(regex, m.group(1) + "&#x2156;"); }
+		
+		// convert \d+.6 to \d 3/5...
+		regex = "(\\d+)\\.6";
+		m = Pattern.compile(regex).matcher(i);
+		if (m.find()) { i = i.replaceAll(regex, m.group(1) + "&#x2157;"); }
+		
+		// convert \d+.8 to \d 4/5...
+		regex = "(\\d+)\\.8";
+		m = Pattern.compile(regex).matcher(i);
+		if (m.find()) { i = i.replaceAll(regex, m.group(1) + "&#x2158;"); }
+		
 		return i;
 	}
 

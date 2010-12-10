@@ -27,8 +27,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
-public class RecipeBrowser extends Activity implements OnItemClickListener, /*OnItemLongClickListener,*/ OnClickListener, FilterChooserCallback, DatabaseEventListener {
+public class RecipeBrowser extends Activity implements OnItemClickListener, OnItemLongClickListener, OnClickListener, FilterChooserCallback, DatabaseEventListener {
 	private RecipeAdapter recipeAdapter;
 	private FilterAdapter filterAdapter;
 	private String recipeAdapterHeadingText;
@@ -100,7 +101,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 		recipesList.setAdapter(this.compositeAdapter);
 
 		recipesList.setOnItemClickListener(this);
-		/*recipesList.setOnItemLongClickListener(this); -- enable for long click listening */
+		recipesList.setOnItemLongClickListener(this);
 	}
 
 	@Override
@@ -113,7 +114,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		// be tidy and don't leave dialogs lying around.
 		/* If the screen orientation changes, our background thread doing the fetch
 		 * can stay running. This isn't a problem - we want the fetch to complete,
@@ -147,7 +148,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 			return true;
 		case R.id.menuBrowseRefresh:
 			dbHelper.deletedOldServerResponses(0); // delete all cached responses
-			
+
 			Thread thread = new Thread(null, doRequest, "BackgroundRecipeFetch");
 			thread.start();
 			return true;
@@ -178,7 +179,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 			cachedMessage = "";
 
 			runOnUiThread(showServerRequestDialog);
-			
+
 			try {
 
 				Authenticator.setDefault(new BasicAuthenticator(this.authUser, this.authPass));
@@ -256,7 +257,7 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 		}
 
 	};
-	
+
 	private Runnable showServerRequestDialog = new Runnable() {
 		@Override
 		public void run() {
@@ -282,14 +283,17 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Object o = compositeAdapter.getItem(position);
 		if (o instanceof BasicRecipe) {
-			BasicRecipe recipe = (BasicRecipe)o;
-			Log.i(Global.TAG, "Basic Recipe clicked.");
-			// this basically means we should fire off an intent to show that particular recipe.
-			// broadcast an intent with a scheme of "recipe://"...
-			Intent i = new Intent(Intent.ACTION_VIEW);
-			String url = Global.httpToRecipeConvert(this.baseUrl + "/recipe/" + recipe.identifier);
-			i.setData(Uri.parse(url));
-			startActivity(i);
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			if (prefs.getBoolean("longTapToOpen", false) == false) {
+				BasicRecipe recipe = (BasicRecipe)o;
+				Log.i(Global.TAG, "Basic Recipe clicked.");
+				// this basically means we should fire off an intent to show that particular recipe.
+				// broadcast an intent with a scheme of "recipe://"...
+				Intent i = new Intent(Intent.ACTION_VIEW);
+				String url = Global.httpToRecipeConvert(this.baseUrl + "/recipe/" + recipe.identifier);
+				i.setData(Uri.parse(url));
+				startActivity(i);
+			}
 		}
 		else if (o instanceof ActiveFilter) {
 			ActiveFilter filter = (ActiveFilter)o;
@@ -321,23 +325,28 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, /*On
 		}
 	}
 
-	/*@Override
+	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
 			long id) {
 
 		boolean consumed = false;
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
 		Object o = compositeAdapter.getItem(position);
-		if (o instanceof BasicRecipe) {
+		if ((o instanceof BasicRecipe) && (prefs.getBoolean("longTapToOpen", false))) {
 			BasicRecipe recipe = (BasicRecipe)o;
-			Log.i(Global.TAG, "Basic Recipe long clicked.");
-		}
-		else if (o instanceof ActiveFilter) {
-			ActiveFilter filter = (ActiveFilter)o;
-			Log.i(Global.TAG, "Active Filter long clicked.");
+			Log.i(Global.TAG, "Basic Recipe clicked.");
+			// this basically means we should fire off an intent to show that particular recipe.
+			// broadcast an intent with a scheme of "recipe://"...
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			String url = Global.httpToRecipeConvert(this.baseUrl + "/recipe/" + recipe.identifier);
+			i.setData(Uri.parse(url));
+			startActivity(i);
+
+			consumed = true;
 		}
 		return consumed;
-	}*/
+	}
 
 	/* Dialog onClick implementation */
 	@Override

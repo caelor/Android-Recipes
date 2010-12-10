@@ -2,19 +2,10 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="Data Source">
-		<EditTextPreference 
-			android:summary="@string/recipes_url_summary" 
-			android:title="@string/recipes_url" 
-			android:key="recipesUrl" 
-			android:defaultValue="http://"></EditTextPreference>
-		<EditTextPreference 
-			android:summary="@string/recipes_url_username_summary" 
-			android:key="authUsername" 
-			android:title="@string/recipes_url_username"></EditTextPreference>
-		<EditTextPreference 
-			android:summary="@string/recipes_url_password_summary" 
-			android:key="authPassword" 
-			android:title="@string/recipes_url_password" 
-			android:password="true"></EditTextPreference>
-</PreferenceCategory>
+		<EditTextPreference android:summary="@string/recipes_url_summary" android:title="@string/recipes_url" android:key="recipesUrl" android:defaultValue="http://"></EditTextPreference>
+		<EditTextPreference android:summary="@string/recipes_url_username_summary" android:key="authUsername" android:title="@string/recipes_url_username"></EditTextPreference>
+		<EditTextPreference android:summary="@string/recipes_url_password_summary" android:key="authPassword" android:title="@string/recipes_url_password" android:password="true"></EditTextPreference>
+
+
+</PreferenceCategory><PreferenceCategory android:title="User Interface"><CheckBoxPreference android:key="showThumbnails" android:summary="@string/show_thumbnails_summary" android:title="@string/show_thumbnails" android:summaryOff="@string/show_thumbnails_summary_off" android:summaryOn="@string/show_thumbnails_summary_on" android:defaultValue="true"></CheckBoxPreference><CheckBoxPreference android:defaultValue="true" android:summaryOff="@string/multiple_peppers_off" android:summaryOn="@string/multiple_peppers_on" android:summary="@string/multiple_peppers_summary" android:key="multiplePeppers" android:title="@string/multiple_peppers"></CheckBoxPreference><CheckBoxPreference android:key="longTapToOpen" android:summaryOff="@string/long_tap_to_open_recipe_off" android:summaryOn="@string/long_tap_to_open_recipe_on" android:defaultValue="false" android:title="@string/long_tap_to_open_recipe"></CheckBoxPreference></PreferenceCategory>
 </PreferenceScreen>

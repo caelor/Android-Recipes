@@ -1,14 +1,14 @@
 package uk.me.plek.kitchenRecipes;
 
-import java.util.HashSet;
+import java.util.Vector;
 
 public class IngredientGroup {
 	protected final String groupName;
-	protected HashSet<Ingredient> ingredients;
+	protected Vector<Ingredient> ingredients;
 
 	public IngredientGroup(String name) {
 		groupName = name;
-		ingredients = new HashSet<Ingredient>();
+		ingredients = new Vector<Ingredient>();
 	}
 	
 	public void addIngredient(Ingredient ingredient) {

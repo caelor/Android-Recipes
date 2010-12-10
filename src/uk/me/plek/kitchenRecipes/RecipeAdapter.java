@@ -7,9 +7,9 @@ import uk.me.plek.kitchenRecipes.ImageDownloadManager.QueueEntry;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +23,15 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 	protected ArrayList<BasicRecipe> items;
 	private final Activity _context;
 	protected final ImageDownloadManager downloadManager;
+	protected SharedPreferences preferences;
 	
 
 	public RecipeAdapter(Activity context, int textViewResourceId, ArrayList<BasicRecipe> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 		this._context = context;
+		
+		this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		
 		this.downloadManager = new ImageDownloadManager(_context);
 	}
@@ -57,9 +60,14 @@ public class RecipeAdapter extends ArrayAdapter<BasicRecipe> implements Download
 				// initially, set a random pepper, while the image gets loaded in the background
 				// avoid a bug in android, and use the layout file to set the drawable
 				//preview.setImageDrawable(v.getResources().getDrawable(R.drawable.random_pepper));
-				preview.setImageLevel((int)(Math.random() * 100) + 1);
+				if (preferences.getBoolean("multiplePeppers", true)) {
+					preview.setImageLevel((int)(Math.random() * 100) + 1);
+				}
+				else {
+					preview.setImageLevel(90);
+				}
 				
-				if (r.imageUrl != null) {
+				if ((r.imageUrl != null) && (preferences.getBoolean("showThumbnails", true))) {
 			    	ImageDownloadManager.QueueEntry qe = new ImageDownloadManager.QueueEntry(v, preview, r.thumbUrl, this);
 			    	downloadManager.queueItem(qe);
 
