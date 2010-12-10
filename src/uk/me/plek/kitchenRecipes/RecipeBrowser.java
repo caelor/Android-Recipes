@@ -19,13 +19,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
@@ -50,22 +54,16 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 	private DatabaseHelper dbHelper;
 	private Thread backgroundFetchThread = null;
 	private CharSequence cachedMessage = "";
+	
+	static final int ContextMenu_ShareLink = 0;
+	static final int ContextMenu_ShareCard = 1;
+	static final int ContextMenu_OpenRecipe = 2;
 
 	private Runnable doShowErrorToast = new Runnable() {
 		@Override
 		public void run() {
 			Toast errorToast = Toast.makeText(RecipeBrowser.this, "Unable to get data from the server. Check your configuration, or try again later.", Toast.LENGTH_LONG);
 			errorToast.show();
-
-			/*new AlertDialog.Builder(RecipeBrowser.this)
-			.setMessage("Unable to contact the server. Please try again later.")
-			.setPositiveButton("OK", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface arg0, int arg1) {
-					RecipeBrowser.this.finish();
-				}
-			})
-			.show();*/
 		}
 	};
 
@@ -101,7 +99,8 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 		recipesList.setAdapter(this.compositeAdapter);
 
 		recipesList.setOnItemClickListener(this);
-		recipesList.setOnItemLongClickListener(this);
+		/*recipesList.setOnItemLongClickListener(this);*/
+		registerForContextMenu(recipesList);
 	}
 
 	@Override
@@ -347,6 +346,64 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 		}
 		return consumed;
 	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+	                                ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		if (v.getId() == R.id.RecipeList) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+			Object o = compositeAdapter.getItem(info.position);
+			
+			if (o instanceof BasicRecipe) {
+				BasicRecipe recipe = (BasicRecipe)o;
+
+				// populate the 
+				menu.setHeaderTitle(recipe.title);
+				menu.add(Menu.NONE, ContextMenu_ShareLink, Menu.NONE, "Share Link");
+				menu.add(Menu.NONE, ContextMenu_ShareCard, Menu.NONE, "Share Recipe Card");
+				
+				if (prefs.getBoolean("longTapToOpen", false)) {
+					menu.add(Menu.NONE, ContextMenu_OpenRecipe, Menu.NONE, "Open Recipe");
+				}
+			}			
+		}
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		super.onContextItemSelected(item);
+		
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		Object o = compositeAdapter.getItem(info.position);
+		
+		if (o instanceof BasicRecipe) {
+			BasicRecipe recipe = (BasicRecipe)o;
+			Intent i;
+			
+			switch (item.getItemId()) {
+			case ContextMenu_ShareLink:
+				Global.shareRecipeLink(recipe, this);
+				return true;
+			case ContextMenu_ShareCard:
+				Global.shareRecipeCard(recipe, this);
+				return true;
+			case ContextMenu_OpenRecipe:
+				i = new Intent(Intent.ACTION_VIEW);
+				String url = recipe.requestUrl;
+				i.setData(Uri.parse(url));
+				startActivity(i);
+				return true;
+			default:
+				return false;
+		  }
+	  }
+	  
+	  return false;
+	}
+
+
 
 	/* Dialog onClick implementation */
 	@Override
@@ -412,4 +469,5 @@ public class RecipeBrowser extends Activity implements OnItemClickListener, OnIt
 		}
 
 	}
+	
 }

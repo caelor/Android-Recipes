@@ -135,6 +135,21 @@
 					<li>Work around a memory leak in BitmapFactory.decodeStream() which caused FC due to out of memory on some devices.</li>
 				</ul></span>
 			</div>
+
+			<div class="version">
+				<span class="major">0</span>
+				<span class="minor">4</span>
+				<span class="type">release</span>
+				<span class="comment">UI Improvements, and Sharing Recipes</span>
+				<span class="changes"><ul>
+					<li>Corrected the display of fractions in recipes.</li>
+					<li>Added ability to disable thumbnails in recipe browser.</li>
+					<li>Added ability to limit the placeholder icons to a single pepper.</li>
+					<li>Added the ability to switch between long and short taps to start a recipe.</li>
+					<li>Added the ability to share a link to the recipe (for sending to another device).</li>
+					<li>Added the ability to share a recipe card (for people who don't have the app).</li>
+				</ul></span>
+			</div>
 		</div>
 	</body>
 </html>

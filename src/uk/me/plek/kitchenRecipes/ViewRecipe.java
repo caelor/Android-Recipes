@@ -28,6 +28,7 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 	private String recipeTemplate;
 	private boolean isLandscape;
 	private LoadRecipeWebViewClient webViewClient;
+	private FullRecipe recipe;
 
 	private class LoadRecipeWebViewClient extends WebViewClient {
 		@Override
@@ -78,19 +79,24 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent i;
 		switch (item.getItemId()) {
 		case R.id.menuShowActiveRecipes:
 			//i = new Intent(getApplicationContext(), ActiveRecipes.class);
 			//startActivity(i);
 			return true;
-		case R.id.menuActiveRecipeCredits:
+		/*case R.id.menuActiveRecipeCredits:
 			i = new Intent(getApplicationContext(), ViewCredits.class);
 			startActivity(i);
-			return true;
+			return true;*/
 		case R.id.menuEndRecipe:
 			Thread t = new Thread(null, doCancelCurrentRecipe, "backgroundRecipeDelete");
 			t.start();
+			return true;
+		case R.id.menuShareLink:
+			Global.shareRecipeLink(recipe, this);
+			return true;
+		case R.id.menuShareCard:
+			Global.shareRecipeCard(recipe, this);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -137,7 +143,7 @@ public class ViewRecipe extends Activity implements DatabaseEventListener {
 						// we've found our fullrecipe...
 						BasicRecipe foo = doc.getRecipes().get(0);
 						if (foo instanceof FullRecipe) {
-							FullRecipe recipe = (FullRecipe)foo;
+							recipe = (FullRecipe)foo;
 
 							RecipeTemplater templater = RecipeTemplater.templateBuilder(recipeTemplate);
 							currentRecipeHTML = templater.generateStyledRecipe(recipe, isLandscape);

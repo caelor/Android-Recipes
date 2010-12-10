@@ -8,13 +8,34 @@
 		android:icon="@drawable/ic_menu_friendslist"
 		android:title="@string/menu_showactive">
 	</item>
-	<item android:id="@+id/menuActiveRecipeCredits" 
+	<!-- <item android:id="@+id/menuActiveRecipeCredits" 
 		android:enabled="true" 
 		android:visible="true" 
 		android:titleCondensed="@string/menu_credits_short" 
 		android:icon="@drawable/ic_menu_allfriends"
 		android:title="@string/menu_credits">
-	</item>
+	</item> -->
+	<item android:id="@+id/menuShareRecipe" 
+		android:enabled="true" 
+		android:visible="true" 
+		android:titleCondensed="@string/menu_share_recipe_short" 
+		android:icon="@android:drawable/ic_menu_share"
+		android:title="@string/menu_share_recipe">
+		<menu>
+			<item android:id="@+id/menuShareLink" 
+				android:enabled="true" 
+				android:visible="true" 
+				android:titleCondensed="@string/menu_share_recipe_link_short" 
+				android:title="@string/menu_share_recipe_link">
+			</item>
+			<item android:id="@+id/menuShareCard" 
+				android:enabled="true" 
+				android:visible="true" 
+				android:titleCondensed="@string/menu_share_recipe_card_short" 
+				android:title="@string/menu_share_recipe_card">
+			</item>
+		</menu>
+	</item>	
 	<item android:id="@+id/menuEndRecipe" 
 		android:enabled="true" 
 		android:visible="true" 

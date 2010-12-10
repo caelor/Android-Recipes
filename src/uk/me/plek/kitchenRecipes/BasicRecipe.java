@@ -18,6 +18,9 @@ public class BasicRecipe {
 	protected String imageUrl = null;
 	protected String thumbUrl = null;
 	
+	protected String recipeCardUrl = null;
+	protected String requestUrl = null;
+	
 	
 	public BasicRecipe(Element recipeElement) {
 		
@@ -40,6 +43,9 @@ public class BasicRecipe {
 		identifier = recipeElement.getAttribute("id");
 		title = recipeElement.getAttribute("title");
 		rating = recipeElement.getAttribute("rating");
+		
+		recipeCardUrl = recipeElement.getAttribute("recipecard_url");
+		requestUrl = Global.httpToRecipeConvert(recipeElement.getAttribute("abs_url"));
 
 		if ("1".equals(recipeElement.getAttribute("hasImage"))) {
 			imageUrl = recipeElement.getAttribute("imageUrl");

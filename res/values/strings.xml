@@ -25,6 +25,12 @@
     <string name="menu_credits">View Credits</string>
     <string name="menu_end_recipe_short">End</string>
     <string name="menu_end_recipe">End This Recipe</string>
+    <string name="menu_share_recipe_short">Share</string>
+    <string name="menu_share_recipe">Share This Recipe</string>
+    <string name="menu_share_recipe_link_short">Share Link</string>
+    <string name="menu_share_recipe_link">Share Recipe Link</string>
+    <string name="menu_share_recipe_card_short">Share Card</string>
+    <string name="menu_share_recipe_card">Share Recipe Card</string>
     <string name="recipes_url_password_summary">The password to access the recipes database (if required).</string>
     <string name="recipes_url_password">Password</string>
     <string name="recipes_url_username_summary">The username to access the recipes database (if required).</string>
