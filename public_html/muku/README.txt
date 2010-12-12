@@ -1,0 +1,20 @@
+Some rights reserved. This work is licensed under a
+Creative Commons Attribution-Share Alike 3.0 License.
+
+http://celldrifter.deviantart.com
+
+http://celldrifter.deviantart.com/art/MUKU-IconPackager-Final-76460659
+
+This icon set & its resources are free of charge. Use them in anyway you wish, except for selling it to others. It is free like God's gift of salvation. If you have always wanted to know Christ, but never looked into Him for youself, please read below. Thank you and enjoy!
+
+Romans 3:23, "For all have sinned, and come short of the glory of God." We have all sinned. We have all done things that are displeasing to God. There is no one who is innocent. Romans 3:10-18 gives a detailed picture of what sin looks like in our lives. The second Scripture on the Romans Road to salvation, Romans 6:23, teaches us about the consequences of sin - "For the wages of sin is death; but the gift of God is eternal life through Jesus Christ our Lord." The punishment that we have earned for our sins is death. Not just physical death, but eternal death!
+
+The third verse on the Romans road to salvation picks up where Romans 6:23 left off, "but the gift of God is eternal life through Jesus Christ our Lord." Romans 5:8 declares, "But God demonstrates His own love toward us, in that while we were still sinners, Christ died for us." Jesus Christ died for us! Jesus' death paid for the price of our sins. Jesus' resurrection proves that God accepted Jesus' death as the payment for our sins.
+
+The fourth stop on the Romans road to salvation is Romans 10:9, "that if you confess with your mouth Jesus as Lord, and believe in your heart that God raised Him from the dead, you will be saved." Because of Jesus' death on our behalf, all we have to do is believe in Him, trusting His death as the payment for our sins - and we will be saved! Romans 10:13 says it again, "for everyone who calls on the name of the Lord will be saved." Jesus died to pay the penalty for our sins and rescue us from eternal death. Salvation, the forgiveness of sins, is available to anyone who will trust in Jesus Christ as their Lord and Savior.
+
+The final aspect of the Romans road to salvation is the results of salvation. Romans 5:1 has this wonderful message, "Therefore, since we have been justified through faith, we have peace with God through our Lord Jesus Christ." Through Jesus Christ we can have a relationship of peace with God. Romans 8:1 teaches us, "Therefore, there is now no condemnation for those who are in Christ Jesus." Because of Jesus' death on our behalf, we will never be condemned for our sins. Finally, we have this precious promise of God from Romans 8:38-39, "For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord."
+
+Would you like to follow the Romans road to salvation? If so, here is a simple prayer you can pray to God. Saying this prayer is a way to declare to God that you are relying on Jesus Christ for your salvation. The words themselves will not save you. Only faith in Jesus Christ can provide salvation! "God, I know that I have sinned against you and am deserving of punishment. But Jesus Christ took the punishment that I deserve so that through faith in Him I could be forgiven. With your help, I place my trust in You for salvation. Thank You for Your wonderful grace and forgiveness - the gift of eternal life! Amen!"
+
+Have you made a decision for Christ because of what you have learned through the Romans road to salvation? Please plug yourself into a local Bible believeing church for more help & encouragement. And welcome to God's family!

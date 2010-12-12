@@ -1,0 +1,11 @@
+
+# make a restful api with htaccess
+
+Options +FollowSymLinks
+RewriteEngine on
+RewriteBase /~ayjay/recipes
+
+RewriteRule ^index\.php$          index.php [L]
+
+RewriteRule ^(.*)$                index.php?$1
+

@@ -1,0 +1,210 @@
+
+span.limitWidth {
+  /*width: 500px;*/
+  display: block;
+  margin: 10px;
+  background-color: #fafafa;
+  border-top: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
+  border-right: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc;
+  padding: 5px;
+}
+
+.multicolumn {
+  clear: both;
+  display: block;
+  -webkit-column-count: 2;
+  -webkit-column-gap: 20px;
+  -webkit-column-rule-color: #dddddd;
+  -webkit-column-rule-style: dashed ;
+  -webkit-column-rule-width: 1px;
+  border-top: 1px dotted #cccccc;
+  padding: 1em;
+  margin-top: 1em;
+}
+.multicolumn3 {
+  display: block;
+  -webkit-column-count: 3;
+  -webkit-column-gap: 50px;
+}
+.no-multicolumn {
+  display: block;
+}
+
+table tr {
+	vertical-align: top;
+}
+
+table tr td {
+	width: 48%;
+}
+
+@font-face {
+	font-family: Timeless;
+	src: url('Timeless.ttf');
+}
+@font-face {
+	font-family: WritingStuff;
+	src: url('Writing_Stuff.ttf');
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #eeeeee;
+	font-size: 0.8em;
+	line-height: 1.4em;
+	font-family: Timeless;
+	-webkit-font-smoothing: antialised;
+}
+
+h1 {
+	/*position: relative;*/
+	top: -0.5em;
+	font-size: 5em;
+	text-align: center;
+	margin-top: 0.5em;
+	font-family: WritingStuff;
+	/*line-height: 0.5em;*/
+}
+
+h2 {
+	border-bottom: 1px solid #cccccc;
+	top: -0.5em;
+	font-size: 2em;
+	text-align: right;
+	clear: both;
+	margin-top: 1em;
+        padding-top: 0.5em;
+	padding-right: 1em;	
+	font-family: WritingStuff;
+	-webkit-column-break-after: avoid;
+	-webkit-column-break-before: auto;
+}
+
+h3.float {
+	clear: left;
+	float: left;
+	text-align: right;
+	width: 4em;
+}
+h3 {
+	font-size: 1.8em;
+	font-family: sans-serif;
+	color: #666;
+	font-weight: 100;
+	padding: 0.2em;
+	margin-right: 0;
+	margin-left: 1em;
+	/*line-height: 0.3em;*/  /* center the title with the text to its right */
+	margin-top: 0.0em;
+	margin-bottom: 0.0em;
+	font-family: WritingStuff;
+	-webkit-column-break-before: auto;
+}
+.colbreak {
+	break-before: column;
+	break-inside: avoid-column;
+	break-after: avoid-column;
+}
+.sub3content {
+	float: left;
+	font-size: 1.5em;
+	padding: 0.2em;
+	margin-top: 0.0em;
+	margin-bottom: 0.0em;
+	margin-left: 0.5em;
+}
+
+#recipeImage {
+	width: 15em;
+}
+
+#recipeImageWrapper {
+	padding: 10px;
+	border-top: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	border-bottom: 2px solid #666;
+	border-right: 2px solid #666;
+	background-color: #fff;
+	-webkit-transform:rotate(3deg);
+	margin: 1em;
+	opacity: 0.20;
+	position: absolute;
+	top:  8em;
+	right: 2em;
+}
+
+.block {
+	clear: both:
+}
+
+#recipeIngredients {
+	padding: 1em;
+}
+
+#recipeInstructions {
+}
+
+li {
+	margin-top: 0.2em;
+	margin-bottom: 0.5em;
+	margin-left: 0.25em;
+	margin-right: 1em;
+}
+
+ul {
+	margin-left: -1em;
+	list-style: none;
+	margin-top: 0.2em;
+	margin-bottom: 1.5em;
+}
+ul li:before {
+	content: "\00BB \0020";
+}
+
+
+ol,ul,li {
+	font-size: 1.2em;
+	-webkit-column-break-inside: avoid;
+	column-break-inside: avoid;
+	break-inside: avoid;
+	-webkit-break-inside: avoid;
+	-webkit-break-before: avoid;
+	break-before: avoid;
+	column-break-before: avoid;
+	-webkit-column-break-before: avoid;
+}
+
+.footnotes {
+	display: block;
+	color: #444;
+	font-size: 1em;
+	text-align: center;
+	margin-top: 2em;
+	font-family: WritingStuff;
+	border-top: 1px dotted #aaa;
+	padding-top: 0.5em;
+}
+.footnotes p {
+	margin: 0;
+}
+.footnotes a:link {
+	color: #44d;
+}
+.footnotes a:visited {
+	color: #44d;
+}
+
+p.notes {
+	font-family: WritingStuff;
+	font-size: 1.5em;
+	margin-left: 1em;
+	margin-right: 1em;
+	text-indent: 1.5em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	color: #228;
+	line-height: 1.2em;
+}
